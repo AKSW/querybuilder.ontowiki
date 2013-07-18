@@ -25,40 +25,57 @@ class QuerybuilderController extends OntoWiki_Controller_Component
         // doing init() like on superclass (OntoWiki_Controller_Component)
         parent::init();
 
+        $navigation = $this->_owApp->getNavigation();
+
         // setup the tabbed navigation
-        OntoWiki_Navigation :: reset();
+        $navigation->reset();
+
         if(class_exists("QuerybuildingHelper")) {
-            OntoWiki_Navigation :: register('listquery', array (
+            $navigation->register(
+                'listquery',
+                array (
                     'controller' => "querybuilding",
                     'action' => "listquery",
                     'name' => "Saved Queries",
                     'position' => 0,
                     'active' => false
-            ));
+                )
+            );
         }
-        OntoWiki_Navigation :: register('queryeditor', array (
-                'controller' => "querybuilding",
+
+        $navigation->register(
+            'queryeditor',
+            array (
+                'controller' => "queries",
                 'action' => "editor",
                 'name' => "Query Editor",
                 'position' => 1,
                 'active' => false
-        ));
-        OntoWiki_Navigation :: register('querybuilder', array (
+            )
+        );
+
+        $navigation->register(
+            'querybuilder',
+            array (
                 'controller' => "querybuilder",
                 'action' => "manage",
                 'name' => "Query Builder ",
                 'position' => 2,
                 'active' => true
-        ));
+            )
+        );
 
         if(class_exists("GraphicalquerybuilderHelper")) {
-            OntoWiki_Navigation :: register('graphicalquerybuilder', array (
+            $navigation->register(
+                'graphicalquerybuilder',
+                array (
                     'controller' => "graphicalquerybuilder",
                     'action' => "display",
                     'name' => "Graphical Query Builder",
                     'position' => 3,
                     'active' => false
-            ));
+                )
+            );
         }
     }
 
@@ -67,7 +84,7 @@ class QuerybuilderController extends OntoWiki_Controller_Component
      */
     public function manageAction() {
         // set the active tab navigation
-        OntoWiki_Navigation::setActive('querybuilder',true);
+        OntoWiki::getInstance()->getNavigation()->setActive('querybuilder',true);
 
         // creates toolbar and adds two buttons
         $toolbar = $this->_owApp->toolbar;
