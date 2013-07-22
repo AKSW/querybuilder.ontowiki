@@ -1,22 +1,22 @@
 /**
  * the GQB is a browser for rdf data (or in the trivial case you use it like a common db search mask)
- * it has a startClass (which links to other classes (e.g. "hasSon"), who link to others(e.g. "hasDog"), and so on - a chained list) 
+ * it has a startClass (which links to other classes (e.g. "hasSon"), who link to others(e.g. "hasDog"), and so on - a chained list)
  * classes can have restrictions over their properties
  * (which results in a smaller number of instances matching these rules)
- * the result is the set of instances matching the restrictions 
+ * the result is the set of instances matching the restrictions
  * of the last class in the chain of classes
- * 
- * 
- * Info for javascript noobs: 
- * 
+ *
+ *
+ * Info for javascript noobs:
+ *
  * function Name(){
  *  this.do;
  * }
- * 
+ *
  * is used as a class declaration here
- * 
+ *
  * Name.prototype.do = function(){doIt();}
- * 
+ *
  * function declarations need to be added after class declaration
  */
 
@@ -40,8 +40,8 @@ function GQBrdfClass(_uri, _label, _lang){
     this.parents = new Array();
     this.children = new Array();
     /** all available owl:datatypeProperties of that class */
-    this.properties = new Array();   
-    /** all predicates of instances that are no datatypeProperties */      
+    this.properties = new Array();
+    /** all predicates of instances that are no datatypeProperties */
     this.nonModelConformProperties = new Array();
     /** all owl:objectProperties of this class */
     this.outgoingLinks = new Array();
@@ -52,7 +52,7 @@ function GQBrdfClass(_uri, _label, _lang){
     this.hasGottenProps = false;
     this.hasGottenLinks = false;
     this.hasGottenNonModelConformPropsAndLinks = false;
-    
+
     /** true if all properties and links are present yet (db returned result) */
     this.ready = false;
 
@@ -109,7 +109,7 @@ GQBrdfClass.prototype.restore = function(savedType) {
     this.outgoingLinks = new Array();
     this.nonModelConformLinks = new Array();
     this.labels = {};
-    
+
     for (var lang in savedType.labels) this.addLabel(savedType.labels[lang],lang);
 
     var property;
@@ -200,9 +200,9 @@ GQBrdfClass.prototype.sortAllPropArraysByOrder = function() {
 /**
  * sort given property array by property[i].order
  * (this should be SysOnt:Order - workaround for a bug at Sparql-"ORDER BY" )
- * 0 = this.properties, 
- * 1 = this.nonModelConformProperties, 
- * 2 = this.outgoingLinks, 
+ * 0 = this.properties,
+ * 1 = this.nonModelConformProperties,
+ * 2 = this.outgoingLinks,
  * 3 = this.nonModelConformLinks
  * @param {int} arrayToSort
  */

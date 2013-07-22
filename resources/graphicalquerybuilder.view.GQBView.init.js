@@ -16,7 +16,7 @@ GQBView.prototype.init = function (){
  * Initializes the JQuery layout.
  */
 GQBView.prototype.initLayout = function() {
-    //setup the tree of saved queries and basic classses 
+    //setup the tree of saved queries and basic classses
     //$("#gqbsavedqueriestree").treeview();
     //setup the tree of restrictions
     $('#gqbClassPropertiesRestrictions').treeview();
@@ -101,12 +101,12 @@ GQBView.prototype.initCanvas = function() {
     // add trash and trashmask to canvas:
     this.trash = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/components/graphicalquerybuilder/resources/images/trash.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
     var trashmask = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/components/graphicalquerybuilder/resources/images/trashmask.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
-    trashmask.mousedown(function(){ 
+    trashmask.mousedown(function(){
         if (confirm(GQB.translate("confirmDelAllPatMsg"))) {
             for (var i = 0; i < GQB.view.patterns.length; i++) {
                 if (!GQB.model.findPatternById(GQB.view.patterns[i].id).allClassesHaveGottenProps()) {
                     alert(GQB.translate("cantDeleteAllPatternsUntilLoadedMsg"));
-                    return;  
+                    return;
                 }
             }
             while (GQB.view.patterns[0]) {
@@ -144,7 +144,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
             helper: 'clone'
         });
     });
-    
+
     // Handles the translation of dragged objects on the Raphael canvas, as
     // well as collision detection with the canvas edge.
     var oldMouseMove = document.onmousemove;
@@ -166,7 +166,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
             GQB.view.draggedViewClass.translate(e.clientX - GQB.view.draggedViewClass.dx, e.clientY - GQB.view.draggedViewClass.dy);
             GQB.view.draggedViewClass.raphLabel.toBack();
             GQB.view.trash.toBack();
-            
+
             // don't allow dragging off the edges:
             var x = GQB.view.draggedViewClass.x;
             var y = GQB.view.draggedViewClass.y;
@@ -182,17 +182,17 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
             } else if (y+5 > GQB.view.raphCanvasHeight) {
                 GQB.view.draggedViewClass.translate(0,GQB.view.raphCanvasHeight-y-10);
             }
-            
+
             if (!GQB.view.draggedViewClass.parentViewPattern.isBlackBoxed) {
                 for (var j = 0; j < GQB.view.draggedViewClass.parentViewPattern.connections.length; j++) {
                     GQB.view.raphaelCanvas.connectionWithArrowAndLabel(GQB.view.draggedViewClass.parentViewPattern.connections[j].raphConnection);
                 }
             }
-            
+
             GQB.view.raphaelCanvas.safari();
             GQB.view.draggedViewClass.dx = e.clientX;
             GQB.view.draggedViewClass.dy = e.clientY;
-            //GQB.view.refreshCanvas(); 
+            //GQB.view.refreshCanvas();
         }
     };
 
@@ -215,7 +215,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
 
         // dragged box over trash: remove corresponding pattern:
         if (GQB.view.mousedOverTrash) {
-        
+
             var doCleanup = function () {
                 draggedViewClass.translate(-200, -150);
                 // update connections
@@ -225,9 +225,9 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                     }
                 }
             };
-            
+
             var confDelPattern = confirm(GQB.translate("confirmDelPatMsg"));
-            if (confDelPattern) {          
+            if (confDelPattern) {
                 if (!draggedViewClass.parentViewPattern.modelPattern.allClassesHaveGottenProps()) {
                     alert(GQB.translate("cantDeletePatternUntilLoadedMsg"));
                     doCleanup();
@@ -250,7 +250,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
             }
             GQB.view.clearClassProperties();
         }
-        
+
         // dragged box was dropped onto another box:
         else if (GQB.view.mousedOverViewClass) {
           var doCleanup = function () {
@@ -259,31 +259,31 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 if (draggedViewClass.raphBlackBoxIcon)
                     draggedViewClass.raphBlackBoxIcon.toFront();
             };
-        
+
             var draggedClassId = draggedViewClass.id;
             var mousedOverClassId = GQB.view.mousedOverViewClass.id;
 
             // we don't want to allow dragging of an object onto itself.
-            if (draggedClassId == mousedOverClassId) { 
+            if (draggedClassId == mousedOverClassId) {
                 doCleanup();
-                return; 
+                return;
             }
 
             var mousedOverClass = GQB.view.mousedOverViewClass.modelClass;
 
             // if dragged onto an object that isn't ready (no properties):
             if (!mousedOverClass.isReady()) {
-                alert (GQB.translate("classLoadingTryAgainMsg", mousedOverClass.type.getLabel())); 
+                alert (GQB.translate("classLoadingTryAgainMsg", mousedOverClass.type.getLabel()));
                 doCleanup();
                 return;
             }
-            
+
             // can't combine classes that have different types:
             if (mousedOverClass.type.uri != draggedViewClass.modelClass.type.uri) {
                 doCleanup();
                 return;
             }
-            
+
             var draggedClass = draggedViewClass.modelClass;
             var draggedPattern = draggedViewClass.parentViewPattern.modelPattern;
 
@@ -296,33 +296,33 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 doCleanup();
                 return;
             }
-            
+
             // store the dragged and moused over objs in special variables:
             GQB.view.draggedViewClassToCombine = draggedViewClass;
             GQB.view.mousedOverViewClassToCombine = GQB.view.mousedOverViewClass;
             // show a dialog asking how to combine the classes:
             $("#gqbDialogBg").css("display","block");
             $("#gqbDialogUnionInt").css("display","block");
-            
+
         // normal drag, not dragged over anything (goes here, because draggedViewClass was removed in above if statement)
-        } else {  
+        } else {
             draggedViewClass.raphBox.toFront();
             draggedViewClass.raphTrashIcon.toFront();
             if (draggedViewClass.raphBlackBoxIcon)
                 draggedViewClass.raphBlackBoxIcon.toFront();
         }
     };
-    
+
     // Handles dropping of items from the left ("west") tree onto the Raphael canvas.
-    // These items can be either saved queries or basic classes (both with a "modelId").  
+    // These items can be either saved queries or basic classes (both with a "modelId").
     // Also stores the dropped mouse position for later use.
     $("#gqbcanvas").droppable({
         drop: function(event,ui) {
             //if ($(ui.draggable).attr("modelId") == undefined) return;
-            
+
             GQB.view.dropCursorPosX = event.pageX;
             GQB.view.dropCursorPosY = event.pageY;
-            
+
             // handle dropping of saved queries:
             if ($(ui.draggable).hasClass("savedquery")) {
                 // we need to get the saved query from the DB, and for that we need it's "saveId",
@@ -359,9 +359,9 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 GQB.view.findViewClassById(dummyStartClass.id).wait();  // show spinner
 
                 // send the query:
-                $.ajaxSetup({'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "application/sparql-results+json")}}) 
+                $.ajaxSetup({'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "application/sparql-results+json")}})
                 jQuery.post(
-                    endpoint, 
+                    endpoint,
                     {
                         "default-graph-uri": GQB.userDbUri,
                         query: getSavedQuery
@@ -420,7 +420,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 );
                 return;
             }
-            
+
             // handle dropping of basic classes
             var draggedClass = GQB.model.findRDFClassByUri($(ui.draggable).attr("about"));
             if (!draggedClass) {
@@ -429,20 +429,20 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 draggedClass = new GQBrdfClass($(ui.draggable).attr("about"), $.trim($(ui.draggable).html().split("<")[0]), GQB.currLang);
                                 GQB.model.classes.push(draggedClass);
             }
-            
-            
+
+
             // the dropped class was either dropped on a preexisting class-box or onto some whitespace
             // we differentiate between the two:
             if (GQB.view.mousedOverViewClass) { // dropped over a preexisting box
-            
+
                 var mousedOverClass = GQB.view.mousedOverViewClass.modelClass;
                 var mousedOverPattern = GQB.view.mousedOverViewClass.parentViewPattern.modelPattern;
-                
+
                 if (!mousedOverClass.isReady()) {
-                    alert (GQB.translate("classLoadingTryAgainMsg", mousedOverClass.type.getLabel())); 
+                    alert (GQB.translate("classLoadingTryAgainMsg", mousedOverClass.type.getLabel()));
                     return;
                 }
-                
+
                 // attempt to find possible links between topMousedOverClass and draggedClass:
                 var linksBetweenClasses = new Array();
                 for (var i = 0; i < mousedOverClass.type.outgoingLinks.length; i++) {
@@ -455,11 +455,11 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                         }
                     }
                 }
-                
+
                 // no links found:
-                if (linksBetweenClasses.length==0) { 
-                    alert(GQB.translate("noConnectionBetweenClassesMsg", mousedOverClass.type.getLabel(), draggedClass.getLabel())); 
-                    return; 
+                if (linksBetweenClasses.length==0) {
+                    alert(GQB.translate("noConnectionBetweenClassesMsg", mousedOverClass.type.getLabel(), draggedClass.getLabel()));
+                    return;
                 }
                 // one link found,
                 // expand mousedOverPattern by the currently dragged class:
@@ -472,23 +472,23 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                     GQB.view.showInfo(GQB.translate("patternExpandedMsg"));
                 }
                 // multiple links found,
-                // show dialog box with all links: 
+                // show dialog box with all links:
                 else {
                     $("#gqbDialogLinkSelSel").html("");
-                    for (var i = 0; i < linksBetweenClasses.length; i++) {  
+                    for (var i = 0; i < linksBetweenClasses.length; i++) {
                          $("#gqbDialogLinkSelSel").append("<option value=\""+linksBetweenClasses[i][0].uri+"\", whattype=\""+linksBetweenClasses[i][1]+"\">"+linksBetweenClasses[i][0].getLabel()+"</option>");
                     }
                     GQB.view.mousedOverViewClassToCombine = mousedOverClass;
                     $("#gqbDialogBg").css("display","block");
                     $("#gqbDialogLinkSel").css("display","block");
                 }
-            } else { // dropped over whitespace  ->  create a new pattern   
+            } else { // dropped over whitespace  ->  create a new pattern
                 var newPattern = new GQBQueryPattern();
                 GQB.model.addPattern(newPattern);
                 var newStartClass = new GQBClass(draggedClass);
                 newStartClass.getPropertiesWithInherited();
                 newPattern.setStartClass(newStartClass);
-                
+
                 GQB.view.showInfo(GQB.translate("newPatternMsg"));
             }
         }
@@ -505,14 +505,14 @@ GQBView.prototype.initMouseClickHandlers = function() {
     $("#gqbDialogUnionIntUnion").click(function(){
         GQB.view.combineDraggedAndMousedOverClasses("union");
         $("#gqbDialogBg").css("display","none");
-        $("#gqbDialogUnionInt").css("display","none");  
+        $("#gqbDialogUnionInt").css("display","none");
         GQB.view.showInfo(GQB.translate("unionPatMsg"));
     });
 
     $("#gqbDialogUnionIntInt").click(function(){
         GQB.view.combineDraggedAndMousedOverClasses("intersection");
         $("#gqbDialogBg").css("display","none");
-        $("#gqbDialogUnionInt").css("display","none");  
+        $("#gqbDialogUnionInt").css("display","none");
         GQB.view.showInfo(GQB.translate("intersectPatMsg"));
     });
 
@@ -520,13 +520,13 @@ GQBView.prototype.initMouseClickHandlers = function() {
         GQB.view.draggedViewClassToCombine = false;
         GQB.view.mousedOverViewClassToCombine = false;
         $("#gqbDialogBg").css("display","none");
-        $("#gqbDialogUnionInt").css("display","none");  
+        $("#gqbDialogUnionInt").css("display","none");
     });
 
     $("#gqbDialogLinkSelOk").click(function(){
         // GQB.view.mousedOverViewClassToCombine has been set to the model(!) class of the moused over object:
         var mousedOverPattern = GQB.model.findPatternOfClass(GQB.view.mousedOverViewClassToCombine);
-        
+
         // find which link was selected in the selector box:
         var theLink = null;
         for (var i = 0; i < GQB.view.mousedOverViewClassToCombine.type.outgoingLinks.length; i++) {
@@ -543,13 +543,13 @@ GQBView.prototype.initMouseClickHandlers = function() {
             GQB.view.findPatternById(mousedOverPattern.id).toggleBlackBox();
         }
         $("#gqbDialogBg").css("display","none");
-        $("#gqbDialogLinkSel").css("display","none");  
+        $("#gqbDialogLinkSel").css("display","none");
         GQB.view.showInfo(GQB.translate("patternExpandedMsg"));
     });
 
     $("#gqbDialogLinkSelCancel").click(function(){
         $("#gqbDialogBg").css("display","none");
-        $("#gqbDialogLinkSel").css("display","none");  
+        $("#gqbDialogLinkSel").css("display","none");
     });
 
     $(".gqbFunButton").click(function(){
@@ -566,7 +566,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
                     GQB.view.patterns[i].classes[j].raphBox.attr({"stroke":GQB.view.box_color});
                 }
             }
-            return; 
+            return;
         }
         alert("Was ist denn hier los??");
         for (var i = 0; i < GQB.view.patterns.length; i++) {
@@ -582,22 +582,22 @@ GQBView.prototype.initMouseClickHandlers = function() {
                 GQB.view.patterns[i].classes[j].dontChangeColor = false;
             }
         }
-        
+
         for (var i = 0; i < GQB.view.patterns.length; i++) {
             for (var j = 0; j < GQB.view.patterns[i].connections.length; j++) {
                 GQB.view.patterns[i].connections[j].dontCalc = false;
-                GQB.view.patterns[i].connections[j].neutralSpringLength = Math.sqrt( 
-                                                Math.pow(GQB.view.patterns[i].connections[j].startViewClass.x + 
-                                                 GQB.view.patterns[i].connections[j].startViewClass.width/2 - 
-                                                 GQB.view.patterns[i].connections[j].endViewClass.x - 
-                                                 GQB.view.patterns[i].connections[j].endViewClass.width/2,2) + 
-                                                Math.pow(GQB.view.patterns[i].connections[j].startViewClass.y + 
-                                                 GQB.view.patterns[i].connections[j].startViewClass.height/2 - 
-                                                 GQB.view.patterns[i].connections[j].endViewClass.y - 
+                GQB.view.patterns[i].connections[j].neutralSpringLength = Math.sqrt(
+                                                Math.pow(GQB.view.patterns[i].connections[j].startViewClass.x +
+                                                 GQB.view.patterns[i].connections[j].startViewClass.width/2 -
+                                                 GQB.view.patterns[i].connections[j].endViewClass.x -
+                                                 GQB.view.patterns[i].connections[j].endViewClass.width/2,2) +
+                                                Math.pow(GQB.view.patterns[i].connections[j].startViewClass.y +
+                                                 GQB.view.patterns[i].connections[j].startViewClass.height/2 -
+                                                 GQB.view.patterns[i].connections[j].endViewClass.y -
                                                  GQB.view.patterns[i].connections[j].endViewClass.height/2,2) );
             }
         }
-        
+
         $(this).html("OFF");
         GQB.view.runPhysics(50);
     });
@@ -624,7 +624,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         tmp.withChilds = !tmp.withChilds;
         tmp.recalculateNumInstances();
     });
-    
+
     $("#gqbClassPropertiesShowUriCheckBox").live("click", function(){
         var tmp = GQB.view.findModelObjectById($(this).attr("modelId"));
         tmp.showUri = !tmp.showUri;
@@ -650,14 +650,14 @@ GQBView.prototype.initMouseClickHandlers = function() {
         }
         else{
             GQB.view.selectedViewClass.modelClass.removeShownProperty(tmp.uri);
-        } 
+        }
     });
 
     $(".gqb-button-deletequery").live("click" ,function(){
         var id = $(this).attr("modelId");
         var modelPattern = GQB.view.findModelObjectById(id);
         if (!modelPattern) return;  // sollte nicht passieren, ist schwerer Fehler
-        
+
         if(confirm(GQB.translate("confirmDelSavedPatternMsg"))){
             modelPattern.deletefromdb();
         }
@@ -667,7 +667,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         if(!GQB.view.resultColumns[0]) return;
         if(GQB.view.displayAllResults) return;
         if(GQB.view.curResultsPage > 0) GQB.view.curResultsPage--;
-        
+
         $("#gqbpagedisplay").html("&nbsp;&nbsp;&nbsp;&nbsp;<b>"+GQB.translate("numResultsLbl", GQB.view.curResultsPage*GQB.view.resultsPerPage+1, ((GQB.view.curResultsPage*GQB.view.resultsPerPage+GQB.view.resultsPerPage)<=(GQB.view.resultColumns[0].length-1)?(GQB.view.curResultsPage*GQB.view.resultsPerPage+GQB.view.resultsPerPage):(GQB.view.resultColumns[0].length-1)), GQB.view.resultColumns[0].length-1)+"</b>");
         GQB.view.refreshCurrentResultsTable();
     });
@@ -676,7 +676,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         if(!GQB.view.resultColumns[0]) return;
         if(GQB.view.displayAllResults) return;
         if(GQB.view.curResultsPage < (GQB.view.resultColumns[0].length-1)/GQB.view.resultsPerPage) GQB.view.curResultsPage++;
-        
+
         $("#gqbpagedisplay").html("&nbsp;&nbsp;&nbsp;&nbsp;<b>"+GQB.translate("numResultsLbl", GQB.view.curResultsPage*GQB.view.resultsPerPage+1, ((GQB.view.curResultsPage*GQB.view.resultsPerPage+GQB.view.resultsPerPage)<=(GQB.view.resultColumns[0].length-1)?(GQB.view.curResultsPage*GQB.view.resultsPerPage+GQB.view.resultsPerPage):(GQB.view.resultColumns[0].length-1)), GQB.view.resultColumns[0].length-1)+"</b>");
         GQB.view.refreshCurrentResultsTable();
     });
@@ -684,7 +684,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
     $(".gqbresultsperpageselector").click(function(){
         var rpp = $(this).attr("rpp");
         var oldrpp = GQB.view.resultsPerPage;
-        
+
         $("#gqbresultsperpageselector"+rpp).addClass("gqbcurrentresultsperpageselector");
         $("#gqbresultsperpageselector"+(GQB.view.displayAllResults ? "Alle" : oldrpp)).removeClass("gqbcurrentresultsperpageselector");
 
@@ -772,7 +772,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         $('#gqbresultsparqlquery').html("<h1 class='title'>"+GQB.translate("sparqlQueryLbl")+"</h1><p>"+$('<div/>').text(curPattern.getQueryAsString()).html().replace(/\n/g, "<br />")+"</p>");
         $('#gqbresultquerydesc').html("<h1 class='title'>"+curPattern.name+"</h1><p>"+curPattern.description+"</p>");
         // Issue the print command
-                
+
         window.print();
     });
 
@@ -795,14 +795,14 @@ GQBView.prototype.initMouseClickHandlers = function() {
         }
     });
 
-    //add restriction by clicking the button right of the according object 
+    //add restriction by clicking the button right of the according object
     $("#gqbaddrestriction").live("click", function(){
         if (!GQB.view.selectedViewClass) {
             alert(GQB.translate("noClassSelMsg"));
         } else if (!( $("#restrictionpropselector").length > 0 )) {
             var selClass = GQB.view.selectedViewClass.modelClass;
             if(!selClass.isReady()){
-                alert(GQB.translate("classLoadingTryAgainMsg", GQB.view.selectedViewClass.modelClass.type.getLabel())); 
+                alert(GQB.translate("classLoadingTryAgainMsg", GQB.view.selectedViewClass.modelClass.type.getLabel()));
             } else {
                 GQB.view.addRestrictionPanel(selClass , $("#gqbClassPropertiesAddRestriction"));
 
@@ -825,16 +825,16 @@ GQBView.prototype.initMouseClickHandlers = function() {
         GQB.view.initRestrictionValueInputs($("#restvalueinputs"));
         $('#gqbRestrictionNegation').attr('checked', false);
     });
-    
+
     //The Restriction Valueinputs change dynamically by changing the Type of Restriction
     $("#restrictiontypeselector").live("change", function(){
         GQB.view.initRestrictionValueInputs($("#restvalueinputs"));
         $('#gqbRestrictionNegation').attr('checked', false);
     });
 
-    //add Restriction by Click on Button right of the AND-Folder 
+    //add Restriction by Click on Button right of the AND-Folder
     $("#gqbaddrestrictionbuttonand").live("click", function(){
-        
+
         if (!GQB.view.selectedViewClass) {
             alert(GQB.translate("noClassSelMsg"));
         } else if (!( $("#restrictionpropselector").length > 0 )) {
@@ -853,7 +853,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         }
     });
 
-    // Add an OR-Restriction to the clicked OR-add-Restriction Button 
+    // Add an OR-Restriction to the clicked OR-add-Restriction Button
     $(".gqb-button-add-or").live("click", function(){
 
         if (!GQB.view.selectedViewClass) {
@@ -864,7 +864,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
             var orIndex = $(this).attr("modelId");
 
             GQB.view.addRestrictionPanel(selClass , $("#addrestrictionorpanel"+orIndex));
-            
+
             $("#setrestrictionbutton").click(function(){
                 GQB.view.setRestriction(selClass, orIndex);
                 $("#addrestrictionorpanel"+orIndex).empty();
@@ -875,19 +875,19 @@ GQBView.prototype.initMouseClickHandlers = function() {
             });
         }
     });
-    
+
     // Delete a Restriction by clicking the delete Restriction-Button
     $(".gqb-button-delete-restriction").live("click", function(){
       if (!GQB.view.selectedViewClass) {
             alert(GQB.translate("noClassSelMsg"));
             return;
-        } 
+        }
         var confDel = confirm(GQB.translate("confirmDelRestr"));
-        if (confDel) { 
+        if (confDel) {
             var selClass = GQB.view.selectedViewClass.modelClass;
             var toplevelIndex = $(this).attr("toplevelIndex");
             var secondlevelIndex = $(this).attr("secondlevelIndex");
-            selClass.deleteRestriction(selClass.restrictions.members[toplevelIndex].members[secondlevelIndex],toplevelIndex);        
+            selClass.deleteRestriction(selClass.restrictions.members[toplevelIndex].members[secondlevelIndex],toplevelIndex);
         }
     });
 
@@ -896,7 +896,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         if (!GQB.view.selectedViewClass) {
             alert(GQB.translate("noClassSelMsg"));
             return;
-        } 
+        }
         if (!( $("#restrictionpropselector").length > 0 )) {
             var selClass = GQB.view.selectedViewClass.modelClass;
             var toplevelIndex = $(this).attr("toplevelIndex");
@@ -972,7 +972,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
         });
 
         $("#cancelrestrictionbutton").click(function(){
-            $("#editrestrictionpanel"+toplevelIndex+"-"+secondlevelIndex).empty();  
+            $("#editrestrictionpanel"+toplevelIndex+"-"+secondlevelIndex).empty();
         });
     });
 

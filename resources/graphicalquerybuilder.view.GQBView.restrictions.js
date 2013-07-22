@@ -37,7 +37,7 @@ GQBView.prototype.initRestrictionTypeBox = function(){
 /**
  * method to find the restriction Type of the restrictiontypeselector
  * @param {Object} member - the restriction member whose type is searched
- * @return the string of the type 
+ * @return the string of the type
  */
 GQBView.prototype.getRestrictionTypeByMember = function(member){
     var result;
@@ -81,12 +81,12 @@ GQBView.prototype.getRestrictionTypeByMember = function(member){
 GQBView.prototype.addRestrictionPanel = function(selClass, jQueryDivToAdd) {
     jQueryDivToAdd.append(GQB.translate("choosePropertyMsg")+": <select id=\"restrictionpropselector\" class=\"gqb-selector\"></select><br/>");
     jQueryDivToAdd.append(GQB.translate("restTypeMsg")+": <select id=\"restrictiontypeselector\" class=\"gqb-selector\"></select>");
-    
+
     for (var i = 0; i < selClass.type.properties.length; i++) {
         $("#restrictionpropselector").append("<option modelId=\""+this.addModelObject(selClass.type.properties[i])+"\" >" + selClass.type.properties[i].getLabel() + "</option>");
     }
 
-    //set initial Restriction types to the SelectBox 
+    //set initial Restriction types to the SelectBox
     this.initRestrictionTypeBox();
     //set the input boxes for the values
     jQueryDivToAdd.append("<div id=\"restvalueinputs\"></div>");
@@ -105,7 +105,7 @@ GQBView.prototype.addRestrictionPanel = function(selClass, jQueryDivToAdd) {
 GQBView.prototype.editRestrictionPanel = function(selClass, jQueryDivToAdd) {
     jQueryDivToAdd.append(GQB.translate("choosePropertyMsg")+": <select id=\"restrictionpropselector\" class=\"gqb-selector\"></select><br/>");
     jQueryDivToAdd.append(GQB.translate("restTypeMsg")+":<select id=\"restrictiontypeselector\" class=\"gqb-selector\"></select>");
-    
+
     for (var i = 0; i < selClass.type.properties.length; i++) {
         $("#restrictionpropselector").append("<option modelId=\""+this.addModelObject(selClass.type.properties[i])+"\" >" + selClass.type.properties[i].getLabel() + "</option>");
     }
@@ -158,11 +158,11 @@ GQBView.prototype.initRestrictionValueInputs = function(jQueryDivToAdd){
             break;
         default:
             break;
-        
+
     }
 };
 
-/** 
+/**
  * Returns an object containing the values of the user input fields
  * corresponding to the passed restrictionType.  The object may
  * have members "val1", "applyToVar1", "val2" or "applyToVar2".
@@ -250,7 +250,7 @@ GQBView.prototype.getRestrictionInputFieldValues = function(restrictionType) {
     return { "val1" : val1, "applyToVar1" : applyToVar1, "val2" : val2, "applyToVar2" : applyToVar2 }
 };
 
-/** 
+/**
  * Creates a new restriction of the given type with the given property and value(s).
  * The first three parameters must be valid, the last two are not always used, but
  * are necessary for some restrictions.
@@ -259,13 +259,13 @@ GQBView.prototype.getRestrictionInputFieldValues = function(restrictionType) {
  * @param val1 The first restriction value (string or int).
  * @param val2 The second restriction value (always int).
  * @param compVar Whether the restriction is applied to a variable or not.
- * @param negation  
- * @return A GQBRestriction* of the proper kind. 
+ * @param negation
+ * @return A GQBRestriction* of the proper kind.
  */
 GQBView.prototype.getNewRestrictionOfType = function(restrictionType, property, val1, val2, applyToVar1, applyToVar2, negation) {
     switch(restrictionType){
         case 0: //string contains
-            return new GQBRestrictionStringContains(property, val1, applyToVar1, negation); 
+            return new GQBRestrictionStringContains(property, val1, applyToVar1, negation);
             break;
         case 1: //string equals
             return new GQBRestrictionStringEquals(property, val1, applyToVar1, negation);
@@ -296,7 +296,7 @@ GQBView.prototype.getNewRestrictionOfType = function(restrictionType, property, 
 GQBView.prototype.setRestriction = function(selClass, orIndex) {
     var mo_id= parseInt($("#restrictionpropselector :selected").attr("modelId"));
     var property = this.findModelObjectById(mo_id);
-    
+
     var restrictionType = parseInt($("#restrictiontypeselector :selected").attr("restrictionType"));
 
     //get the restriction values dependent on the type of restriction
@@ -314,7 +314,7 @@ GQBView.prototype.setRestriction = function(selClass, orIndex) {
     if (orIndex == parseInt("-1")) {
 
         if (selClass.restrictions.hasMember()) {
-            level1Idx = selClass.restrictions.members.length; 
+            level1Idx = selClass.restrictions.members.length;
         } else{
             level1Idx = 0;
         }
@@ -322,8 +322,8 @@ GQBView.prototype.setRestriction = function(selClass, orIndex) {
         level1Idx = orIndex;
     }
 
-    this.selectedViewClass.modelClass.addRestriction(this.getNewRestrictionOfType(restrictionType, property, 
-                                                    restrictionInputs.val1, restrictionInputs.val2, 
+    this.selectedViewClass.modelClass.addRestriction(this.getNewRestrictionOfType(restrictionType, property,
+                                                    restrictionInputs.val1, restrictionInputs.val2,
                                                     restrictionInputs.applyToVar1, restrictionInputs.applyToVar2, negation), level1Idx);
 };
 
@@ -334,14 +334,14 @@ GQBView.prototype.setRestriction = function(selClass, orIndex) {
 GQBView.prototype.setEditedRestriction = function() {
     var mo_id= parseInt($("#restrictionpropselector :selected").attr("modelId"));
     var property = this.findModelObjectById(mo_id);
-    
+
     var restrictionType = parseInt($("#restrictiontypeselector :selected").attr("restrictionType"));
 
     //get the restriction values dependent on the type of restriction
     var restrictionInputs = this.getRestrictionInputFieldValues(restrictionType);
 
     var negation;
-    
+
     //get the negation checkbox content
     if($('#gqbRestrictionNegation').is(':checked')){
         negation = true;
@@ -349,14 +349,14 @@ GQBView.prototype.setEditedRestriction = function() {
         negation = false;
     }
 
-    var memberToEdit = this.getNewRestrictionOfType(restrictionType, property, 
-                                                    restrictionInputs.val1, restrictionInputs.val2, 
+    var memberToEdit = this.getNewRestrictionOfType(restrictionType, property,
+                                                    restrictionInputs.val1, restrictionInputs.val2,
                                                     restrictionInputs.applyToVar1, restrictionInputs.applyToVar2, negation);
-    
+
     var obj = this.selectedViewClass.modelClass;
     var gqbEvent = new GQBEvent("editRestriction", obj);
     GQB.controller.notify(gqbEvent);
     this.selectedViewClass.parentViewPattern.modelPattern.recalculateAllNumInstances();
-    
+
     return memberToEdit;
 };

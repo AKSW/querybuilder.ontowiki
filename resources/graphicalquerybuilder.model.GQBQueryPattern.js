@@ -5,29 +5,29 @@
  */
 function GQBQueryPattern(){
     this.id = GQB.model.countPatterns++;
-    
+
     /**
      * pointer to the first class in the "chain"
      */
     this.startClass;
-    
+
     /**
      * pointer to the class that this queries represents most
      * this has no sparql equivalent - used to use this pattern as a blackbox
      */
     this.selectedClass;
-    
+
     /**
      * the current sparql-query as a string
      */
     this.sparqlQuery;
-    
+
     this.description = "";
     this.name = "default";
     this.saveId = 1;
     this.isFromDb = false;
     this.distinct = false;
-    
+
     //private variables used when constructing the query:
     this.selectPart = "";
     this.wherePart = "";
@@ -35,27 +35,27 @@ function GQBQueryPattern(){
     this.query = "";
     this.result;
     this.numInstances = 0;
-    
+
     //methods
     this.setStartClass;
     this.setSelectedClass;
-    
+
     this.getClassesFlat;
     this.findClassByUri;
     this.findClassById;
     this.findPropertyByUri;
     this.findRestrictionById;
-    
+
     this.getResults;
     this.getQueryAsString;
     this.buildQuery;
     this.add;
     this.remove;
-    
+
     this.allClassesHaveGottenProps;
     this.recalculateAllNumInstances;
     this.recalculateNumInstances;
-    
+
     this.save;
     this.checkIfNameAvailableAndSave;
     this.toSaveable;
@@ -70,7 +70,7 @@ function GQBQueryPattern(){
 GQBQueryPattern.prototype.allClassesHaveGottenProps = function(){
     var classes = this.getClassesFlat();
     for (var i = 0; i < classes.length; i++) {
-        if (!classes[i].isReady()) 
+        if (!classes[i].isReady())
             return false;
     }
     return true;
@@ -103,17 +103,17 @@ GQBQueryPattern.prototype.recalculateNumInstances = function(){
         classes[i].numInstances = "...";
     }
     this.numInstances = "...";
-    
+
     // build query
     var query = escape(this.getQueryAsString()) + "\nLIMIT 1000";
-    
+
     // send the request to the "getquerysize" service
     var url = urlBase + 'graphicalquerybuilder/getquerysize/?default-graph-uri=' + GQB.model.graphs[0] + '&query=' + query;
-    
+
     var me = this;
     $.get(url, function(data){
         me.numInstances = parseInt(data);
-        if (me.numInstances >= 1000) 
+        if (me.numInstances >= 1000)
             me.numInstances = "1000+";
         var classes = me.getClassesFlat();
         for (var i = 0; i < classes.length; i++) {
@@ -137,16 +137,16 @@ GQBQueryPattern.prototype.setSelectedClass = function(nclass){
  * @param {Object} nclass The new start class.
  */
 GQBQueryPattern.prototype.setStartClass = function(nclass){
-    if (this.startClass) 
+    if (this.startClass)
         return;
-    if (!nclass) 
+    if (!nclass)
         return;
-    
+
     this.startClass = nclass;
     this.selectedClass = nclass;
-    
+
     this.recalculateAllNumInstances();
-    
+
     var pair = [this, nclass];
     var gqbEvent = new GQBEvent("expandedPattern", pair);
     GQB.controller.notify(gqbEvent);
@@ -166,21 +166,21 @@ GQBQueryPattern.prototype.setStartClass = function(nclass){
  * @return array of all classes
  */
 GQBQueryPattern.prototype.getClassesFlat = function(){
-    if (!this.startClass) 
+    if (!this.startClass)
         return [];
     var classArray = new Array();
     var classStack = new Array(); // the stack for our depth first search
     var curClass;
-    
+
     // add "startClass" to the stack
     classStack.push(this.startClass);
     this.startClass.hasBeenVisited = 1;
     classArray.push(this.startClass);
-    
+
     // loop until the stack is empty
     do {
         curClass = classStack.pop();
-        
+
         // add all unvisited neighbors to the stack and mark them as visited
         for (var i = 0; i < curClass.selectedLinks.length; i++) {
             if (curClass.selectedLinks[i].target.hasBeenVisited == 0) {
@@ -191,7 +191,7 @@ GQBQueryPattern.prototype.getClassesFlat = function(){
         }
     }
     while (classStack.length > 0);
-    
+
     // reset "hasBeenVisited"-state for all visited classes
     for (var i = 0; i < classArray.length; i++) {
         classArray[i].hasBeenVisited = 0;
@@ -206,7 +206,7 @@ GQBQueryPattern.prototype.getClassesFlat = function(){
  */
 GQBQueryPattern.prototype.findClassByUri = function(uri){
     var classes = this.getClassesFlat();
-    
+
     for (var i = 0; i < classes.length; i++) {
         // here is the search condition:
         if (classes[i].type.uri == uri) {
@@ -223,7 +223,7 @@ GQBQueryPattern.prototype.findClassByUri = function(uri){
  */
 GQBQueryPattern.prototype.findClassById = function(id){
     var classes = this.getClassesFlat();
-    
+
     for (var i = 0; i < classes.length; i++) {
         // here is the search condition:
         if (classes[i].id == id) {
@@ -241,7 +241,7 @@ GQBQueryPattern.prototype.findClassById = function(id){
 GQBQueryPattern.prototype.findPropertyByUri = function(uri){
     var classes = this.getClassesFlat();
     var result = null;
-    
+
     for (var i = 0; i < classes.length; i++) {
         result = classes[i].findPropertyByUri(uri);
         if (result != null) {
@@ -259,7 +259,7 @@ GQBQueryPattern.prototype.findPropertyByUri = function(uri){
 GQBQueryPattern.prototype.findRestrictionById = function(id){
     var classes = this.getClassesFlat();
     var result = null;
-    
+
     for (var i = 0; i < classes.length; i++) {
         result = classes[i].findRestrictionById(id);
         if (result != null) {
@@ -284,7 +284,7 @@ GQBQueryPattern.prototype.add = function(where, how, getProps, whattype){
     if (!whattype) {
         whattype = GQB.model.findRDFClassByUri(how.range);
     }
-    else 
+    else
         if (!whattype.uri) {
             whattype = GQB.model.findRDFClassByUri(whattype);
         }
@@ -292,11 +292,11 @@ GQBQueryPattern.prototype.add = function(where, how, getProps, whattype){
         alert(GQB.translate("addToPatLinkErrorMsg"))
         return null;
     }
-    
+
     var what = new GQBClass(whattype);
-    if (getProps != false) 
+    if (getProps != false)
         what.getPropertiesWithInherited();
-    
+
     if (where != null) {
         where.selectedLinks.push(new GQBSelectedLink(how, what));
     }
@@ -306,13 +306,13 @@ GQBQueryPattern.prototype.add = function(where, how, getProps, whattype){
     if (this.selectedClass == undefined) {
         this.setSelectedClass(what);
     }
-    
+
     this.recalculateAllNumInstances();
-    
+
     var triple = [this, what, where];
     var gqbEvent = new GQBEvent("expandedPattern", triple);
     GQB.controller.notify(gqbEvent);
-    
+
     return what;
 };
 
@@ -323,9 +323,9 @@ GQBQueryPattern.prototype.add = function(where, how, getProps, whattype){
  * @param {Object} what The GQBClass to remove, must be in this pattern.
  */
 GQBQueryPattern.prototype.remove = function(where, what){
-    if (!where || !what || !this.findClassById(where.id) || !this.findClassById(what.id)) 
+    if (!where || !what || !this.findClassById(where.id) || !this.findClassById(what.id))
         return;
-    if (what.id == this.startClass.id) 
+    if (what.id == this.startClass.id)
         return;
     // find which link connects parent and child:
     var selectedLinkToRemove = null;
@@ -335,13 +335,13 @@ GQBQueryPattern.prototype.remove = function(where, what){
             break;
         }
     }
-    if (!selectedLinkToRemove) 
+    if (!selectedLinkToRemove)
         return;
     // remove the selectedLink from the parent class (effectively
-    // "deleting that class and all subclasses, since no 
+    // "deleting that class and all subclasses, since no
     // links to them will remain):
     GQB.arrayRemoveObj(where.selectedLinks, selectedLinkToRemove);
-    
+
     // see if the selected class was deleted:
     var hasSelectedClass = false;
     var classesRemaining = this.getClassesFlat();
@@ -357,7 +357,7 @@ GQBQueryPattern.prototype.remove = function(where, what){
     if (!hasSelectedClass) {
         this.setSelectedClass(where);
     }
-    
+
     this.recalculateAllNumInstances();
     GQB.controller.notify(new GQBEvent("removedClassFromPattern", ""));
 };
@@ -379,40 +379,40 @@ GQBQueryPattern.prototype.buildQuery = function(limitClass){
     if (this.distinct) {
         this.selectPart = "DISTINCT ";
     }
-    
-    if (this.startClass.type.children.length == 0 || !this.startClass.withChilds) 
+
+    if (this.startClass.type.children.length == 0 || !this.startClass.withChilds)
         this.wherePart = "?" + GQB.model.varNameOf(this.startClass) + " rdf:type <" + this.startClass.type.uri + "> .\n";
     else {
         this.wherePart = "{?" + GQB.model.varNameOf(this.startClass) + " rdf:type <" + this.startClass.type.uri + "> }\n";
     }
-    
+
     if (this.startClass.withChilds) {
         for (var i = 0; i < this.startClass.type.children.length; i++) {
             this.wherePart += " UNION {?" + GQB.model.varNameOf(this.startClass) + " rdf:type <" + this.startClass.type.children[i].uri + "> } \n";
         }
     }
-    
+
     // loop until the stack is empty
     do {
         curClass = classStack.pop();
-        
+
         // here is the action:
         curClassVar = GQB.model.varNameOf(curClass);
-        
+
         // if user selected no properties of this class
         // or if he explicitly wants to see the uri of objects of this class
         // show it
         if (curClass.selectedProperties.length == 0 || curClass.showUri || this.startClass.id == curClass.id) {
             this.selectPart += "?" + curClassVar + " ";
         }
-        
+
         //process selectProperties of this class
         for (var i = 0; i < curClass.selectedProperties.length; i++) {
             curPropVar = "?" + curClassVar + "_" + GQB.model.varNameOf(curClass.selectedProperties[i]);
-            
+
             // add vars of properties that should be displayed in the result
             this.selectPart += curPropVar + " ";
-            
+
             // bind the vars of selected (shown) properties
             if (curClass.selectedProperties[i].uri == "http://www.w3.org/2000/01/rdf-schema#label") {
                 this.wherePart += "OPTIONAL { ?" + curClassVar + " rdfs:label " + curPropVar + " } . \n";
@@ -420,14 +420,14 @@ GQBQueryPattern.prototype.buildQuery = function(limitClass){
             else {
                 this.wherePart += "OPTIONAL { ?" + curClassVar + " <" + curClass.selectedProperties[i].uri + "> " + curPropVar + " } . \n";
             }
-            
+
             this.filterPart += " (LANG(" + curPropVar + ") = \"" + GQB.model.lang + "\" || LANG(" + curPropVar + ") = \"\") && ";
         }
-        
+
         //process restrictions of this class
         // add the "WHERE" parts of each restriction belonging to this class:
         this.wherePart += curClass.restrictions.toWhereString("?" + curClassVar);
-        
+
         // add the "FILTER" parts of each restriction belonging to this class:
         // (avoiding some troublesome cases that occur from time to time)
         var curFilterPart = curClass.restrictions.toFilterString("?" + curClassVar);
@@ -437,7 +437,7 @@ GQBQueryPattern.prototype.buildQuery = function(limitClass){
             this.filterPart += curFilterPart;
             this.filterPart += " && ";
         }
-        
+
         //process selectedLinks of this class
         // add the condition for links from this class to one of its neighbors:
         //   - the variable name of the neighbor class receives a suffix based upon its position in the neighbor array
@@ -446,50 +446,50 @@ GQBQueryPattern.prototype.buildQuery = function(limitClass){
                 this.wherePart += "OPTIONAL {\n";
             }
             this.wherePart += "?" + curClassVar + " <" + curClass.selectedLinks[i].property.uri + "> ?" + GQB.model.varNameOf(curClass.selectedLinks[i].target) + " . \n";
-            
-            if (curClass.selectedLinks[i].target.type.children.length == 0 || !curClass.selectedLinks[i].target.withChilds) 
+
+            if (curClass.selectedLinks[i].target.type.children.length == 0 || !curClass.selectedLinks[i].target.withChilds)
                 this.wherePart += "?" + GQB.model.varNameOf(curClass.selectedLinks[i].target) + " rdf:type <" + curClass.selectedLinks[i].target.type.uri + "> . ";
             else {
                 this.wherePart += "{?" + GQB.model.varNameOf(curClass.selectedLinks[i].target) + " rdf:type <" + curClass.selectedLinks[i].target.type.uri + "> } \n";
             }
-            
+
             if (curClass.selectedLinks[i].target.withChilds) {
                 for (var j = 0; j < curClass.selectedLinks[i].target.type.children.length; j++) {
                     this.wherePart += "UNION {?" + GQB.model.varNameOf(curClass.selectedLinks[i].target) + " rdf:type <" + curClass.selectedLinks[i].target.type.children[j].uri + "> }\n";
                 }
             }
-            
+
             if (curClass.selectedLinks[i].optional) {
                 this.wherePart += "}\n";
             }
         }
-        
-        //END of action 
-        
+
+        //END of action
+
         // add all neighbors of the current class to the stack and mark them as visited
         // unless the current class is the "limit" class:
-        
+
         if (limitClass == undefined || curClass != limitClass) { // this check can be performed using the classIDs
             for (var i = 0; i < curClass.selectedLinks.length; i++) {
                 if (curClass.selectedLinks[i].target.hasBeenVisited == 0) {
                     classStack.push(curClass.selectedLinks[i].target);
                     curClass.selectedLinks[i].target.hasBeenVisited = 1;
-                    
+
                     // keep track of which classes were visited
                     vistedClasses.push(curClass.selectedLinks[i].target);
                 }
             }
         }
-        
+
     }
     while (classStack.length > 0);
-    
+
     for (var i = 0; i < vistedClasses.length; i++) {
         vistedClasses[i].hasBeenVisited = 0;
     }
 };
 
-/** 
+/**
  * Creates a query string out of this pattern starting with "startClass".
  * (Should not be called asynchronously.)
  * @param limitClass building the query will stop if this class is ever reached. if undefined, no limit
@@ -507,7 +507,7 @@ GQBQueryPattern.prototype.getQueryAsString = function(limitClass){
         // add "FILTER()" and remove the last "&& " from the filter string
         this.filterPart = "FILTER( " + this.filterPart.substr(0, this.filterPart.length - 3) + ")";
     }
-    
+
     this.sparqlQuery = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
         PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \n\
         SELECT " + this.selectPart + " \nFROM <" + GQB.model.graphs[0] + "> \nWHERE { \n" + this.wherePart + this.filterPart + "}";
@@ -537,13 +537,13 @@ GQBQueryPattern.prototype.checkIfNameAvailableAndSave = function(){
         alert(GQB.translate("savePatNoNameMsg"));
         return;
     }
-    
+
     // if this is an update - name can be kept
     if (this.isFromDb) {
         this.save();
         return;
     }
-    
+
     //check if name available
     var getSavedQueriesQuery = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
     "SELECT DISTINCT ?pattern " +
@@ -556,13 +556,13 @@ GQBQueryPattern.prototype.checkIfNameAvailableAndSave = function(){
     "FILTER ( str(?id) = str(" +
     this.saveId +
     ")) }";
-    
+
     //set base url of SPARQL query service
     var endpoint = urlBase + "service/sparql";
-    
+
     //configure the default graph(s) to query
     var graph = GQB.userDbUri;
-    
+
     var me = this;
     $.ajaxSetup({
         'beforeSend': function(xhr){
@@ -580,11 +580,11 @@ GQBQueryPattern.prototype.checkIfNameAvailableAndSave = function(){
         }
         try {
             var jsonresult = eval(" ( " + result + " ) ");
-        } 
+        }
         catch (e) {
             alert(GQB.translate("noIdAvailableErrorMsg"));
         }
-        
+
         if (jsonresult.bindings.length == 0) {
             //ok
             me.save();
@@ -610,7 +610,7 @@ GQBQueryPattern.prototype.checkIfNameAvailableAndSave = function(){
  */
 GQBQueryPattern.prototype.restore = function(savedobj){
     this.name = savedobj.name;
-    
+
     // TEMPORARILY set my selectedClass variable to the old ID (!)
     // of the selected class (id which was saved), so that it can
     // be identified in "restore()"... (selectedClass usually stores
@@ -620,9 +620,9 @@ GQBQueryPattern.prototype.restore = function(savedobj){
     };
     if(!this.startClass)
         this.startClass = new GQBClass();
-    
+
     this.startClass.restore(savedobj.startClass, this);
-    
+
     this.description = unescape(savedobj.description);
     this.distinct = savedobj.distinct;
     this.isFromDb = true;
@@ -651,12 +651,12 @@ GQBQueryPattern.prototype.save = function(){
         alert(GQB.translate("savePatNoNameMsg"));
         return;
     }
-    
+
     var patternStr = $.toJSON(this.toSaveable());
     var typeuri = this.selectedClass.type.uri;
     var typeLabel = this.selectedClass.type.getLabel();
     var queryStr = this.getQueryAsString();
-    
+
     var postdata = { // POST data
         json: patternStr,
         name: this.name,
@@ -667,10 +667,10 @@ GQBQueryPattern.prototype.save = function(){
         generator: "gqb",
         share: $("#savequerysharecheckbox").is(':checked') ? "true" : "false"
     };
-    
+
     var me = this;
-    $.post(urlBase + "querybuilding/savequery", 
-        postdata, 
+    $.post(urlBase + "querybuilding/savequery",
+        postdata,
         function(result){
         if (result == "All OK") {
             var gqbEvent = new GQBEvent("saved", me);
@@ -681,8 +681,8 @@ GQBQueryPattern.prototype.save = function(){
             GQB.controller.notify(gqbEvent);
         }
     });
-    
-    
+
+
 };
 
 /**

@@ -2,7 +2,7 @@
 // Works with Raphael 0.7.4
 // Also uses the constant GQB.view.conlabel_color defined in GQBView.js
 
-/** 
+/**
  * Creates a connection with an arrow pointing at the target box and a label
  * in the middle.
  */
@@ -12,7 +12,7 @@ Raphael.fn.connectionWithArrowAndLabel = function (obj1, obj2, line, bg, label) 
         obj1 = line.from;
         obj2 = line.to;
     }
-    
+
     var bb1 = obj1.getBBox();
     var bb2 = obj2.getBBox();
     var p = [{x: bb1.x + bb1.width / 2, y: bb1.y - 1},
@@ -78,13 +78,13 @@ Raphael.fn.connectionWithArrowAndLabel = function (obj1, obj2, line, bg, label) 
             arrow = this.path({stroke: color,  fill: "black"}, arrowPathL);
           //move arrow to end of line
           arrow.translate(x4-10,y4-5);
-          
+
           obj2.arrow = arrow;
 
           //set to Front to overlap the boxed class,
           //it's not neccessary but it makes the connction looks better
           obj2.arrow.toFront();
-          
+
        }
          //moving the label to the new position
        if(obj2.label) {
@@ -113,12 +113,12 @@ Raphael.fn.connectionWithArrowAndLabel = function (obj1, obj2, line, bg, label) 
           arrow = this.path({stroke: color,  fill: "black"}, arrowPathL);
         //move arrow to end of line
         arrow.translate(x4-10,y4-5);
-        
+
         //create label for the connection
         var connectionLabel = this.text(anchorLabel.x, anchorLabel.y, label);
         //set label font size a.s.o.
         connectionLabel.attr({"font-size": 14, fill: GQB.view.conlabel_color});
-        
+
         //create connection obj for easier understanding of source code
         var connection = {
                   bg: bg && bg.split && this.path({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}, path),
@@ -126,7 +126,7 @@ Raphael.fn.connectionWithArrowAndLabel = function (obj1, obj2, line, bg, label) 
           from: obj1,
                   to: obj2
               };
-          
+
         //save the created arrowand label in the to-object for easier access
         connection.to.arrow = arrow;
         connection.to.label = connectionLabel;

@@ -40,7 +40,7 @@ GQBController.prototype.notify = function (_event){
             GQB.view.selectClass(_event.obj[1], false);
             GQB.view.showInfo(GQB.translate("patternExpandedMsg"));
             break;
-        case "setSelectedClass": 
+        case "setSelectedClass":
             // "black boxing" in view corresponds to selecting in model:
             GQB.view.setBlackBoxClass(_event.obj);
             break;
@@ -72,10 +72,10 @@ GQBController.prototype.notify = function (_event){
         case "editRestriction":
             GQB.view.selectClass(_event.obj, true);  // force selection
             break;
-        case "gotDBError": 
+        case "gotDBError":
             GQB.view.showInfo(GQB.translate("virtuosoErrorMsg", _event.obj));
             break;
-        case "gotResult": 
+        case "gotResult":
             GQB.view.showResult(_event.obj);
             break;
         default:

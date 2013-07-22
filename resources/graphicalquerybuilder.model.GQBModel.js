@@ -1,4 +1,4 @@
-/** 
+/**
  * GQBModel
  * represents the model-part of the mvc.
  * here are the classes and everything stored.
@@ -14,7 +14,7 @@ function GQBModel(_graph){
     this.savedQueries = new Array();
     // we need to know if all rdf classes are available:
     this.hasGottenClasses = false;
-    
+
     /**
      * here are all available rdf-classes from the db stored
      */
@@ -23,12 +23,12 @@ function GQBModel(_graph){
     this.countPatterns = 0; // used for id
     this.graphs = new Array();
     this.graphs[0] = _graph;
-    
+
     this.lang = GQB.currLang;//"de";
     //private vars
     this.numVarsUsedByUri = new Array();
     this.varNumsOfObjectById = new Array();
-    
+
     //methods
     this.init;
     this.findRDFClassByUri;
@@ -37,13 +37,13 @@ function GQBModel(_graph){
     this.findPatternOfClass;
     this.findPatternById;
     this.findRestrictionById;
-    
+
     this.getClasses;
     this.addClass;
     this.getSavedQueries;
-    
+
     this.addPattern;
-    
+
     this.varNameOf;
 }
 
@@ -81,7 +81,7 @@ GQBModel.prototype.findRDFClassByUri = function(needle){
     return null;
 };
 
-/** searches in all patterns for a GQBClass with a given uri.  
+/** searches in all patterns for a GQBClass with a given uri.
  * @param uri the uri to search for
  * @return theclass or null if nothing found
  */
@@ -96,7 +96,7 @@ GQBModel.prototype.findClassInPatternsByUri = function(uri){
     return null;
 };
 
-/** searches in all patterns for a GQBClass with a given id.  
+/** searches in all patterns for a GQBClass with a given id.
  * @param id the id to search for
  * @return theclass or null if nothing found
  */
@@ -111,7 +111,7 @@ GQBModel.prototype.findClassInPatternsById = function(id){
     return null;
 };
 
-/** searches in all patterns for a GQBQUeryPattern with a given id.  
+/** searches in all patterns for a GQBQUeryPattern with a given id.
  * @param id the id to search for
  * @return thepattern or null if nothing found
  */
@@ -124,7 +124,7 @@ GQBModel.prototype.findPatternById = function(id){
     return null;
 };
 
-/** searches in all patterns (and their classes) for a GQBRestriction with a given id.  
+/** searches in all patterns (and their classes) for a GQBRestriction with a given id.
  * @param id the id to search for
  * @return therestriction or null if nothing found
  */
@@ -139,7 +139,7 @@ GQBModel.prototype.findRestrictionById = function(id){
     return null;
 };
 
-/** searches in all patterns for a GQBClass and returns the parent pattern.  
+/** searches in all patterns for a GQBClass and returns the parent pattern.
  * @param nclass the class to search for
  * @return thecpattern or null if nothing found
  */
@@ -152,7 +152,7 @@ GQBModel.prototype.findPatternOfClass = function(nclass){
     return null;
 };
 
-/** 
+/**
  * Queries  for a list of all classes in the model
  * creates a "gotClasses" Event with results in a view action which display them
  */
@@ -161,12 +161,12 @@ GQBModel.prototype.getClasses = function(){
             WHERE { {?type a <http://www.w3.org/2000/01/rdf-schema#Class> } UNION {?type a <http://www.w3.org/2002/07/owl#Class> }. \n \
             ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label . \n " +
     "OPTIONAL {?type <http://ns.ontowiki.net/SysOnt/order> ?order} }";
-    
+
     //set base url of SPARQL query service
     var endpoint = urlBase + "service/sparql";
-    
+
     var me = this;
-    
+
     $.ajax({
         url: endpoint,
         dataType: "json",
@@ -341,12 +341,12 @@ GQBModel.prototype.getSavedQueries = function(){
     "> ?typelabel \
             } \
             ORDER BY ?type";
-    
+
     //set base url of SPARQL query service
     var endpoint = urlBase + "service/sparql";
-    
+
     var me = this;
-    
+
     $.ajax({
         url: endpoint,
         data: {
@@ -405,12 +405,12 @@ FILTER(sameTerm(?uri, <" +
     GQB.toload +
     ">))\
 }";
-    
+
     //set base url of SPARQL query service
     var endpoint = urlBase + "service/sparql";
-    
+
     var me = this;
-    
+
     $.getJSON({
         url: endpoint,
         data: {
@@ -476,11 +476,11 @@ GQBModel.prototype.varNameOf = function(obj){
         // is a GQBProperty
         rawName = obj.getLabel();
     }
-    if (!rawName) 
+    if (!rawName)
         return;
     rawName = rawName.toLowerCase();
     var varName = "";
-    
+
     for (var i = 0; i < rawName.length; i++) {
         if ((rawName[i] >= 'a' && rawName[i] <= 'z') || (rawName[i] >= '0' && rawName[i] <= '9')) {
             varName += rawName[i];
@@ -500,12 +500,12 @@ GQBModel.prototype.varNameOf = function(obj){
             }
         }
     }
-    
+
     varName = varName.split("/\W/").join().toLowerCase();
     if (obj.id == undefined) {
         return varName;
     }
-    
+
     if (this.varNumsOfObjectById[obj.id] == undefined) {
         if (this.numVarsUsedByUri[obj.type.uri] == undefined) {
             this.numVarsUsedByUri[obj.type.uri] = 0;

@@ -9,7 +9,7 @@ require_once 'OntoWiki/Toolbar.php';
  * @author     Jonas Brekle <j.brekle.o@gmx.de>
  * @copyright  Copyright (c) 2009, {@link http://aksw.org AKSW}
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
- * @version    $Id: GraphicalquerybuilderController.php 
+ * @version    $Id: GraphicalquerybuilderController.php
  */
 class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
     //uris that are used for saving

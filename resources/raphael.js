@@ -2600,7 +2600,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, label) {
         obj1 = line.from;
         obj2 = line.to;
     }
-    
+
     var bb1 = obj1.getBBox();
     var bb2 = obj2.getBBox();
     var p = [{x: bb1.x + bb1.width / 2, y: bb1.y - 1},

@@ -44,7 +44,7 @@ function GQBClass(rdfType){
     this.getConformPropsAndNonConformLinksAndProps;
     this.getConformLinks;
 
-    // Recalculates the number of instances of objects 
+    // Recalculates the number of instances of objects
     // corresponding to this GQBClass which exist in the database:
     this.recalculateNumInstances;
 
@@ -71,16 +71,16 @@ function GQBClass(rdfType){
     this.toSaveable;
 }
 
-/** 
+/**
  * Determines if this GQBClass object is ready (has all properties and links).
  * @return true if ready, otherwise false.
  */
 GQBClass.prototype.isReady = function() {return this.type.ready;}
 
-/** 
+/**
  * Merges the properties of the passed class into this class.
  * The passed class remains unchanged.
- * The merging can be either a union or an intersection, as 
+ * The merging can be either a union or an intersection, as
  * specified by mode.
  * @param otherClass the class to be merged into this class (as a copy)
  * @param mode either "union" or "intersection"
@@ -121,7 +121,7 @@ GQBClass.prototype.mergeWithClass = function(otherClass, mode){
  * @param {GQBClass} otherClass the class to merge with
  */
 GQBClass.prototype.restrictionDisjunction = function(otherClass){
-// (a & b) | (c & d) = ((a & b) | c) & ((a & b) | d) = (a | c) & (b | c) & (a | d) & (b | d) 
+// (a & b) | (c & d) = ((a & b) | c) & ((a & b) | d) = (a | c) & (b | c) & (a | d) & (b | d)
 // We must take each AND structure in this class and combine it's contents with
 // the contents of each AND structure in the other class.
     var otherRest = otherClass.restrictions;
@@ -130,10 +130,10 @@ GQBClass.prototype.restrictionDisjunction = function(otherClass){
 
     for(var i = 0; i < this.restrictions.members.length; i++) {
         var myCurOrStrct = this.restrictions.members[i];
-        
+
         for(var j = 0; j < otherRest.members.length; j++) {
             var otherCurOrStrct = otherRest.members[j];
-            
+
             var myCurNewOrStrct = new GQBRestrictionStructure("OR", 2);
             for(var x = 0; x < myCurOrStrct.members.length; x++) {
                 var curMemberCopy = GQB.copyRestriction(myCurOrStrct.members[x]);
@@ -160,7 +160,7 @@ GQBClass.prototype.restrictionDisjunction = function(otherClass){
  * Search through all of my properties looking for one with a certain uri.
  * @param {Object} uri The uri to search for.
  * @return A member type.properties or null if not found.
- */ 
+ */
 GQBClass.prototype.findPropertyByUri = function(uri){
     if (!uri) return null;
 
@@ -176,7 +176,7 @@ GQBClass.prototype.findPropertyByUri = function(uri){
  * Search for a selected link with the passed uri.
  * @param {Object} uri The uri to search for.
  * @return A member of selectedLinks or null if not found.
- */ 
+ */
 GQBClass.prototype.findSelectedLinkByUri = function(uri){
     if (!uri) return null;
 
@@ -192,7 +192,7 @@ GQBClass.prototype.findSelectedLinkByUri = function(uri){
  * Search through my restriction structure with search key id.
  * @param {Object} id The id to search for.
  * @return A GQBRestriction or a GQBRestrictionStructure or null if nothing found.
- */ 
+ */
 GQBClass.prototype.findRestrictionById = function(id){
     return this.restrictions.findRestrictionById(id);
 };
@@ -224,11 +224,11 @@ GQBClass.prototype.removeShownProperty = function(uri){
     this.selectedProperties = newShownProperties
 };
 
-/** 
+/**
  * Adds the restriction rest to this class's restriction tree.  The index
  * given indicates the "OR" structure to which the restriction is to be
  * added.  If orIdx is undefined, then a new "OR" structure is first added
- * to the top-level "AND" structure of this GQBClass, to which rest is then added. 
+ * to the top-level "AND" structure of this GQBClass, to which rest is then added.
  * @param rest A GQBRestriction or GQBRestrictionStructure of any kind
  * @param orIdx The index of the "OR" structure to which rest is to be added, or undefined
 */
@@ -249,7 +249,7 @@ GQBClass.prototype.addRestriction = function(rest, orIdx){
  * Remove a restriction from this class.
  * @param {Object} restrictionObj The GQBRestriction or GQBRestrictionStructure to remove.
  * @param {Object} level1Idx The index in my top level GQBRestrictionStructure ("AND") of
- *          either the GQBRestrictionStructure ("OR") containing the GQBRestriction to remove, 
+ *          either the GQBRestrictionStructure ("OR") containing the GQBRestriction to remove,
  *          or the index of the GQBRestriction to remove.
  */
 GQBClass.prototype.deleteRestriction = function(restrictionObj,level1Idx){
@@ -379,7 +379,7 @@ GQBClass.prototype.toSaveable = function(){
     };
 };
 
-/** 
+/**
  * end of getting properties and non-modelconform properties+links
  *
  * @param classes An array of URIs containing all parent RDF classes to this GQBClass's RDF type
@@ -387,7 +387,7 @@ GQBClass.prototype.toSaveable = function(){
  */
 GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
     var model = GQB.model.graphs[0];
-    var getPropertiesQuery = 
+    var getPropertiesQuery =
         "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
             PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\
             SELECT DISTINCT ?property ?label ?order ?range\
@@ -421,7 +421,7 @@ GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
         dataType: "json",
         success: function (jsonResult) {
             var modelconformPropsUris = new Array();
-            if (jsonResult.bindings.length > 0) { 
+            if (jsonResult.bindings.length > 0) {
                 var uri;
                 var label;
                 var lang;
@@ -434,7 +434,7 @@ GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
                     if (jsonResult.bindings[i].range) {
                         exrange = jsonResult.bindings[i].range.value.split("#").pop();
                         if ( exrange == "date" || exrange == "gDay" || exrange == "gYearMonth" || exrange == "gMonth" || exrange == "gMonthDay" ) continue;
-                    } 
+                    }
                     lang = " ";
                     for (var j = 0; j < GQB.supportedLangs.length; j++) {
                         if (jsonResult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
@@ -452,16 +452,16 @@ GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
                         myType.properties.push(new GQBProperty(uri, label, lang, (jsonResult.bindings[i].range ? jsonResult.bindings[i].range.value : "not found"), order));
                     }
                 }
-            } else { 
+            } else {
                 //no props found
                 //alert(GQB.translate("fatalErrorNoPropsFoundMsg", myType.getLabel()));
             }
-            
+
             me.getNonConformProps(modelconformPropsUris);
         },
                 complete: function(){
                     myType.hasGottenProps = true;
-            
+
                     if (myType.hasGottenProps && myType.hasGottenLinks && myType.hasGottenNonModelConformPropsAndLinks) {
                             myType.sortAllPropArraysByOrder();
                             myType.ready = true;
@@ -473,7 +473,7 @@ GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
     });
 };
 
-/** 
+/**
  * Gets all properties of this GQBClass's RDF class, which are not model conform.
  * A list of all properties which are model conform must be provided, so that the
  * non model conform properties may be identified.
@@ -509,7 +509,7 @@ WHERE { \n\
 
     // build sparql query url:
     var queryUrl = urlBase + "service/sparql";
-    
+
     var myType = this.type;
     // send off query:
     $.ajax({
@@ -530,7 +530,7 @@ WHERE { \n\
                     uri = jsonResult.bindings[i].uri.value;
                                         var extracted_label = jsonResult.bindings[i].uri.value.split('/\/#/');
                                         label = jsonResult.bindings[i].label ? jsonResult.bindings[i].label.value : extracted_label[extracted_label.length -1];
-                    if (jsonResult.bindings[i].range) { 
+                    if (jsonResult.bindings[i].range) {
                         exrange = jsonResult.bindings[i].range.value.split("#").pop();
                         if ( exrange == "date" || exrange == "gDay" || exrange == "gYearMonth" || exrange == "gMonth" || exrange == "gMonthDay" ) continue;
                     }
@@ -559,7 +559,7 @@ WHERE { \n\
                 }
 
             }
-            
+
         },
                 complete: function(){
                     myType.hasGottenNonModelConformPropsAndLinks = true;
@@ -574,7 +574,7 @@ WHERE { \n\
     });
 };
 
-/** 
+/**
  * Gets all model conform links of my RDF type or any parent RDF type.
  * Links are defined as owl#ObjectProperties.
  * @param classes An array of URIs containing all parent RDF classes to this GQBClass's RDF type
@@ -582,7 +582,7 @@ WHERE { \n\
  */
 GQBClass.prototype.getConformLinks = function(){
     var model = GQB.model.graphs[0];
-    var getLinksQuery = 
+    var getLinksQuery =
                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
                 PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\
                 SELECT DISTINCT ?property ?label ?order ?range \
@@ -622,10 +622,10 @@ GQBClass.prototype.getConformLinks = function(){
                 var order;
                 var exrange;
 
-                for (var i=0; i < jsonResult.bindings.length; i++) { 
+                for (var i=0; i < jsonResult.bindings.length; i++) {
                     uri = jsonResult.bindings[i].property.value;
                     label = jsonResult.bindings[i].label.value;
-                    
+
                     lang = " ";
                     for (var j = 0; j < GQB.supportedLangs.length; j++) {
                         if (jsonResult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
@@ -644,7 +644,7 @@ GQBClass.prototype.getConformLinks = function(){
                 }
             }
 
-            
+
         },
                 complete: function(){
                     myType.hasGottenLinks = true;

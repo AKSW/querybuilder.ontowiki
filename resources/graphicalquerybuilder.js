@@ -7,21 +7,21 @@
  * the model, the controller, the view, the selectedModelUri, some uris of predicated used in the query db...
 */
 /*
-var GQB = { 
-    selectedModelUri : "http://www.uni-leipzig.de/unigeschichte/professorenkatalog/leipzig/", 
-    model : null, 
-    view : null, 
-    controller : null, 
-    userDbUri : "http://ns.ontowiki.net/GQB/UserQueries/user-Anonymous/", 
-    patternClassName : "http://ns.ontowiki.net/GQB/UserQueries/Pattern", 
-    patternJson : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Json", 
-    patternName : "http://www.w3.org/2000/01/rdf-schema#label", 
-    patternSaveId : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/SaveId", 
-    patternDesc : "http://www.w3.org/2000/01/rdf-schema#comment", 
-    patternType : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Type", 
-    patternTypeLabel : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/TypeLabel", 
-    patternDate : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Date", 
-    patternselectedClassUri : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/selectedClassUri", 
+var GQB = {
+    selectedModelUri : "http://www.uni-leipzig.de/unigeschichte/professorenkatalog/leipzig/",
+    model : null,
+    view : null,
+    controller : null,
+    userDbUri : "http://ns.ontowiki.net/GQB/UserQueries/user-Anonymous/",
+    patternClassName : "http://ns.ontowiki.net/GQB/UserQueries/Pattern",
+    patternJson : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Json",
+    patternName : "http://www.w3.org/2000/01/rdf-schema#label",
+    patternSaveId : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/SaveId",
+    patternDesc : "http://www.w3.org/2000/01/rdf-schema#comment",
+    patternType : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Type",
+    patternTypeLabel : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/TypeLabel",
+    patternDate : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Date",
+    patternselectedClassUri : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/selectedClassUri",
     patternQuery : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Query",
     currLang : "en",
     supportedLangs : [ "en", "de" ]
@@ -29,9 +29,9 @@ var GQB = {
 */
 
 
-/** 
+/**
  * remove an object from an array
- * 
+ *
  * jQuery.toJson has a problem converting functions
 * so a extended array object can not be converted
 * solution: a function in this global var
@@ -42,7 +42,7 @@ GQB.arrayRemoveObj = function(arr, obj) {
     var remainder = new Array();
     for (var i = 0; i < arr.length; i++) {
         if (arr[i] != obj) {
-            remainder.push(arr[i]);  
+            remainder.push(arr[i]);
         }
     }
     arr.length = 0;

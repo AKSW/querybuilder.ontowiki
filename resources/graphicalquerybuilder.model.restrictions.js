@@ -35,7 +35,7 @@ function GQBRestrictionDateBetween(_property, _restrictionDateFrom, _restriction
 /**
  * GQBRestrictionDateBetween.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionDateBetween.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("between")+" " + this.restrictionDateFrom + " "+GQB.translate("and")+" " + this.restrictionDateTo;
     else return this.property.getLabel() + " "+GQB.translate("not between")+" " + this.restrictionDateFrom + " "+GQB.translate("and")+" " + this.restrictionDateTo;
@@ -44,7 +44,7 @@ GQBRestrictionDateBetween.prototype.toString = function(){
 /**
  * GQBRestrictionDateBetween.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionDateBetween.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var fromString = this.applyToVarFrom ? classVarName + "Var" + (varOffset+1) : "\"" + this.restrictionDateFrom + "\"^^xsd:gYear";
@@ -55,10 +55,10 @@ GQBRestrictionDateBetween.prototype.toFilterString = function(classVarName, varO
 /**
  * GQBRestrictionDateBetween.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionDateBetween.prototype.toSaveable = function(){
     return {
-        property: this.property.toSaveable(),  
+        property: this.property.toSaveable(),
         restrictionDateFrom: this.restrictionDateFrom,
         restrictionDateTo: this.restrictionDateTo,
         restrictionType: this.restrictionType,
@@ -86,7 +86,7 @@ function GQBRestrictionDateAfter(_property, _restrictionDateFrom, _applyToVarFro
 
     this.property = _property;
     this.restrictionDateFrom = _restrictionDateFrom;
- 
+
     this.restrictionType = "GQBRestrictionDateAfter";
     this.negation = _negation;
     this.applyToVarFrom = _applyToVarFrom ? _applyToVarFrom : false;
@@ -98,7 +98,7 @@ function GQBRestrictionDateAfter(_property, _restrictionDateFrom, _applyToVarFro
 /**
  * GQBRestrictionDateAfter.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionDateAfter.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("after")+" " + this.restrictionDateFrom;
     else return this.property.getLabel() + " "+GQB.translate("not after")+" " + this.restrictionDateFrom;
@@ -107,7 +107,7 @@ GQBRestrictionDateAfter.prototype.toString = function(){
 /**
  * GQBRestrictionDateAfter.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionDateAfter.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var fromString = this.applyToVarFrom ? classVarName + "Var" + (varOffset+1) : "\"" + this.restrictionDateFrom + "\"^^xsd:gYear";
@@ -117,7 +117,7 @@ GQBRestrictionDateAfter.prototype.toFilterString = function(classVarName, varOff
 /**
  * GQBRestrictionDateAfter.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionDateAfter.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -161,7 +161,7 @@ function GQBRestrictionDateBefore(_property, _restrictionDateTo, _applyToVarTo, 
 /**
  * GQBRestrictionDateBefore.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionDateBefore.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("before")+" " + this.restrictionDateTo;
     else return this.property.getLabel() + " "+GQB.translate("not before")+" " + this.restrictionDateTo;
@@ -170,7 +170,7 @@ GQBRestrictionDateBefore.prototype.toString = function(){
 /**
  * GQBRestrictionDateBefore.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionDateBefore.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var toString = this.applyToVarTo ? classVarName + "Var" + (varOffset + 1) : "\"" + this.restrictionDateTo + "\"^^xsd:gYear";
@@ -180,7 +180,7 @@ GQBRestrictionDateBefore.prototype.toFilterString = function(classVarName, varOf
 /**
  * GQBRestrictionDateBefore.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionDateBefore.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -194,7 +194,7 @@ GQBRestrictionDateBefore.prototype.toSaveable = function(){
 /**
  * GQBRestrictionHasProperty
  * can be added as an restriction to a class
- * need to pass a property which should be restricted 
+ * need to pass a property which should be restricted
  * the restriction then can be turned in a sparql-filter-expression
  * @param {GQBProperty} _property
  * @param {Bool} _negation
@@ -209,15 +209,15 @@ function GQBRestrictionHasProperty(_property, _negation){
     this.property = _property;
     this.restrictionType = "GQBRestrictionHasProperty";
     this.negation = _negation;
-    
-    this.toString;  
+
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionHasProperty.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionHasProperty.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("is empty");
     else return this.property.getLabel() + " "+GQB.translate("is not empty");
@@ -226,7 +226,7 @@ GQBRestrictionHasProperty.prototype.toString = function(){
 /**
  * GQBRestrictionHasProperty.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionHasProperty.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     if(!this.negation){
@@ -238,7 +238,7 @@ GQBRestrictionHasProperty.prototype.toFilterString = function(classVarName, varO
 /**
  * GQBRestrictionHasProperty.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionHasProperty.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -267,15 +267,15 @@ function GQBRestrictionStringContains(_property, _restrictionString, _applyToVar
     this.restrictionType = "GQBRestrictionStringContains";
     this.negation = _negation;
     this.applyToVar = _applyToVar ? _applyToVar : false;
-    
-    this.toString;  
+
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionStringContains.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionStringContains.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("contains")+" \"" + this.restrictionString + "\"";
     else return this.property.getLabel() + " "+GQB.translate("does not contain")+" \"" + this.restrictionString + "\"";
@@ -284,7 +284,7 @@ GQBRestrictionStringContains.prototype.toString = function(){
 /**
  * GQBRestrictionStringContains.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionStringContains.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     if(!this.negation){
@@ -298,7 +298,7 @@ GQBRestrictionStringContains.prototype.toFilterString = function(classVarName, v
             restStrWorkaround += "["+letters[i].toUpperCase()+letters[i].toLowerCase()+"]";
         }
         return "regex(str("+varName+"), \""+restStrWorkaround+"\", \"i\")";
-    } 
+    }
     else{
         if (this.applyToVar) {
             return "!regex(str("+varName+"), str("+classVarName + "Var" + (varOffset+1) +"), \"i\")";
@@ -315,7 +315,7 @@ GQBRestrictionStringContains.prototype.toFilterString = function(classVarName, v
 /**
  * GQBRestrictionStringContains.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionStringContains.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -348,14 +348,14 @@ function GQBRestrictionStringEquals(_property, _restrictionString, _applyToVar, 
     this.negation = _negation;
     this.applyToVar = _applyToVar ? _applyToVar : false;
 
-    this.toString;  
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionStringEquals.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionStringEquals.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("is equal to")+" \"" + this.restrictionString + "\"";
     else return this.property.getLabel() + " "+GQB.translate("is not equal to")+" \"" + this.restrictionString + "\"";
@@ -364,12 +364,12 @@ GQBRestrictionStringEquals.prototype.toString = function(){
 /**
  * GQBRestrictionStringEquals.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionStringEquals.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
 
     if(!this.negation) {
-        if (!this.applyToVar) 
+        if (!this.applyToVar)
             return "(str("+varName+") = str(\""+this.restrictionString+"\"))";
         else
             return "(str("+varName+") = str("+classVarName + "Var" + (varOffset+1)+"))";
@@ -378,7 +378,7 @@ GQBRestrictionStringEquals.prototype.toFilterString = function(classVarName, var
 /**
  * GQBRestrictionStringEquals.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionStringEquals.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -415,14 +415,14 @@ function GQBRestrictionIntegerBetween(_property, _restrictionIntFrom, _restricti
     this.applyToVarFrom = _applyToVarFrom ? _applyToVarFrom : false;
     this.applyToVarTo = _applyToVarTo ? _applyToVarTo : false;
 
-    this.toString; 
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionIntegerBetween.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionIntegerBetween.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("between")+" " + this.restrictionIntFrom + " "+GQB.translate("and")+" " + this.restrictionIntTo;
     else return this.property.getLabel() + " "+GQB.translate("not between")+" " + this.restrictionIntFrom + " "+GQB.translate("and")+" " + this.restrictionIntTo;
@@ -431,7 +431,7 @@ GQBRestrictionIntegerBetween.prototype.toString = function(){
 /**
  * GQBRestrictionIntegerBetween.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionIntegerBetween.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var fromString = this.applyToVarFrom ? classVarName + "Var" + (varOffset+1) : this.restrictionIntFrom;
@@ -443,10 +443,10 @@ GQBRestrictionIntegerBetween.prototype.toFilterString = function(classVarName, v
 /**
  * GQBRestrictionIntegerBetween.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionIntegerBetween.prototype.toSaveable = function(){
     return {
-        property: this.property.toSaveable(),  
+        property: this.property.toSaveable(),
         restrictionIntFrom: this.restrictionIntFrom,
         restrictionIntTo: this.restrictionIntTo,
         restrictionType: this.restrictionType,
@@ -478,14 +478,14 @@ function GQBRestrictionIntegerBiggerAs(_property, _restrictionIntFrom, _applyToV
     this.negation = _negation;
     this.applyToVarFrom = _applyToVarFrom ? _applyToVarFrom : false;
 
-    this.toString; 
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionIntegerBiggerAs.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionIntegerBiggerAs.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("greater than")+" " + this.restrictionIntFrom;
     else return this.property.getLabel() + " "+GQB.translate("not greater than")+" " + this.restrictionIntFrom;
@@ -494,7 +494,7 @@ GQBRestrictionIntegerBiggerAs.prototype.toString = function(){
 /**
  * GQBRestrictionIntegerBiggerAs.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionIntegerBiggerAs.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var fromString = this.applyToVarFrom ? classVarName + "Var" + (varOffset+1) : this.restrictionIntFrom;
@@ -505,10 +505,10 @@ GQBRestrictionIntegerBiggerAs.prototype.toFilterString = function(classVarName, 
 /**
  * GQBRestrictionIntegerBiggerAs.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionIntegerBiggerAs.prototype.toSaveable = function(){
     return {
-        property: this.property.toSaveable(),  
+        property: this.property.toSaveable(),
         restrictionIntFrom: this.restrictionIntFrom,
         restrictionType: this.restrictionType,
         applyToVarFrom: this.applyToVarFrom,
@@ -538,14 +538,14 @@ function GQBRestrictionIntegerSmallerAs(_property, _restrictionIntTo, _applyToVa
     this.negation = _negation;
     this.applyToVarTo = _applyToVarTo ? _applyToVarTo : false;
 
-    this.toString; 
+    this.toString;
     this.toFilterString;
 }
 
 /**
  * GQBRestrictionIntegerSmallerAs.toString()
  * @return human readable string form of this restriction
- */ 
+ */
 GQBRestrictionIntegerSmallerAs.prototype.toString = function(){
     if(!this.negation) return this.property.getLabel() + " "+GQB.translate("less than")+" " + this.restrictionIntTo;
     else return this.property.getLabel() + " "+GQB.translate("not less than")+" " + this.restrictionIntTo;
@@ -554,7 +554,7 @@ GQBRestrictionIntegerSmallerAs.prototype.toString = function(){
 /**
  * GQBRestrictionIntegerSmallerAs.toFilterString()
  * @return sparql-conform expression of this restriction
- */ 
+ */
 GQBRestrictionIntegerSmallerAs.prototype.toFilterString = function(classVarName, varOffset){
     var varName = classVarName + "Var" + varOffset;
     var toString = this.applyToVarTo ? classVarName + "Var" + (varOffset + 1) : this.restrictionIntTo;
@@ -565,7 +565,7 @@ GQBRestrictionIntegerSmallerAs.prototype.toFilterString = function(classVarName,
 /**
  * GQBRestrictionIntegerSmallerAs.toSaveable()
  * @return this without functions and unnessecary
- */ 
+ */
 GQBRestrictionIntegerSmallerAs.prototype.toSaveable = function(){
     return {
         property: this.property.toSaveable(),
@@ -579,7 +579,7 @@ GQBRestrictionIntegerSmallerAs.prototype.toSaveable = function(){
 /**
  * GQBRestrictionStructure
  * a logical structure
- * can hold many restrictions and gives them a structure 
+ * can hold many restrictions and gives them a structure
  * e.g. (A && B)  (where A and B are "members")
  * @param {string} _mode must be "AND or "OR"
  * @param {int} _level must be 1 or 2
@@ -588,7 +588,7 @@ GQBRestrictionIntegerSmallerAs.prototype.toSaveable = function(){
 function GQBRestrictionStructure( _mode, _level){
     this.members = new Array();
 
-    this.mode = _mode; 
+    this.mode = _mode;
     this.level = _level;
     this.varOffset = 0;
     this.restrictionType = "GQBRestrictionStructure";
@@ -663,7 +663,7 @@ GQBRestrictionStructure.prototype.findRestrictionById = function (id){
         else {
             //the member is another structure
             tmp = this.members[i].findRestrictionById(id);
-            if (tmp != null) 
+            if (tmp != null)
                 return tmp;
         }
     }
@@ -704,10 +704,10 @@ GQBRestrictionStructure.prototype.compareRestrictions = function(rest1, rest2){
 
 /**
 * evaluate this restriction to a sparql-conform where-part
-* @return a string which must be added to the WHERE clause of a query in 
+* @return a string which must be added to the WHERE clause of a query in
 * order to use this restriction structure:
 * (recurses into daughter structures)
-* @param classVarName is the variable name of the class to which this restriciton belongs in the SPARQL-Query 
+* @param classVarName is the variable name of the class to which this restriciton belongs in the SPARQL-Query
 *      is a string of the form "?classX" with X being an integer
 * @param varOffset indicates where the counting of restriction variables should start
 * each restriction then receives a variable name of the form "?classXVarY" with integers X and Y
@@ -722,7 +722,7 @@ GQBRestrictionStructure.prototype.toWhereString = function(classVarName, varOffs
             // is a structure
             result += this.members[i].toWhereString(classVarName, this.varOffset);  // recursion if a structure
             this.varOffset = this.members[i].varOffset;
-        } 
+        }
         else {
             // is a Restriction
             if(this.members[i].restrictionType=="GQBRestrictionHasProperty"){
@@ -734,7 +734,7 @@ GQBRestrictionStructure.prototype.toWhereString = function(classVarName, varOffs
             if (this.members[i].applyToVar == true) {
                 result += classVarName + " <" + this.members[i].restrictionString + "> "+classVarName + "Var" + this.varOffset + " . ";
                 this.varOffset++;
-            } 
+            }
             if (this.members[i].applyToVarFrom == true) {
                 var fromString = " ";
                 if (this.members[i].restrictionType.match("GQBRestrictionDate"))
@@ -743,7 +743,7 @@ GQBRestrictionStructure.prototype.toWhereString = function(classVarName, varOffs
                     fromString = this.members[i].restrictionIntFrom;
                 result += classVarName + " <" + fromString + "> "+classVarName + "Var" + this.varOffset + " . ";
                 this.varOffset++;
-            } 
+            }
             if (this.members[i].applyToVarTo == true) {
                 var toString = " ";
                 if (this.members[i].restrictionType.match("GQBRestrictionDate"))
@@ -754,7 +754,7 @@ GQBRestrictionStructure.prototype.toWhereString = function(classVarName, varOffs
                 this.varOffset++;
             }
         }
-    } 
+    }
     return result;
 };
 
@@ -767,7 +767,7 @@ GQBRestrictionStructure.prototype.toWhereString = function(classVarName, varOffs
 GQBRestrictionStructure.prototype.toFilterString = function(classVarName, varOffset) {
     if (varOffset == undefined) varOffset = 0;
     this.varOffset = varOffset;
-    
+
     var result = "";
     var operator = "||";
     if ( this.mode == "AND" ) {
@@ -776,7 +776,7 @@ GQBRestrictionStructure.prototype.toFilterString = function(classVarName, varOff
 
     for (var i = 0; i < this.members.length; i++) {
         if ( i+1 != this.members.length ) {
-            result += this.members[i].toFilterString(classVarName, this.varOffset) + " " + operator + " "; 
+            result += this.members[i].toFilterString(classVarName, this.varOffset) + " " + operator + " ";
         } else {
             result += this.members[i].toFilterString(classVarName, this.varOffset);
         }
@@ -784,10 +784,10 @@ GQBRestrictionStructure.prototype.toFilterString = function(classVarName, varOff
         if ( this.members[i].restrictionType == "GQBRestrictionStructure" ) {
             // the structure will keep track of how many variables are added,
             // we then take that total when "toFilterString()" returns
-            this.varOffset = this.members[i].varOffset;  
+            this.varOffset = this.members[i].varOffset;
         } else {
             // each restriction adds one variable...
-            this.varOffset++;  
+            this.varOffset++;
             // unless comparing two variables:
             if (this.members[i].applyToVar == true) {
                 this.varOffset++;
@@ -818,7 +818,7 @@ GQBRestrictionStructure.prototype.restore = function(savedStructure) {
         if (savedStructure.member[i].restrictionType != "GQBRestrictionStructure") {
             property = new GQBProperty(savedStructure.member[i].property.uri);
             property.order = savedStructure.member[i].property.order;
-            for (var lang in savedStructure.member[i].property.labels) 
+            for (var lang in savedStructure.member[i].property.labels)
                 property.addLabel(savedStructure.member[i].property.labels[lang], lang);
         }
         switch(savedStructure.member[i].restrictionType){
@@ -827,7 +827,7 @@ GQBRestrictionStructure.prototype.restore = function(savedStructure) {
                 member.restore(savedStructure.member[i]);
                 break;
             case "GQBRestrictionStringContains":
-                
+
                 member = new GQBRestrictionStringContains(property, savedStructure.member[i].restrictionString, savedStructure.member[i].applyToVar, savedStructure.member[i].negation);
                 break;
             case "GQBRestrictionStringEquals":
@@ -868,7 +868,7 @@ GQBRestrictionStructure.prototype.toSaveable = function() {
         newmembers[i] = this.members[i].toSaveable();
     }
     return {
-        mode: this.mode, 
+        mode: this.mode,
         level: this.level,
         varOffset: this.varOffset,
         restrictionType: this.restrictionType,
@@ -880,7 +880,7 @@ GQBRestrictionStructure.prototype.toSaveable = function() {
  * Returns a new GQBRestriction, which is a copy of the passed
  * GQBRestriction.  Does not copy GQBRestrictionStructures.
  * @param rest The GQBRestricion to copy.
- * @return A new GQBRestriction of the same type and with the same 
+ * @return A new GQBRestriction of the same type and with the same
  *         properties as the passed GQBRestriction, or null if
  *         something other than a GQBRestriction was passed.
  */
@@ -904,7 +904,7 @@ GQB.copyRestriction = function(rest) {
     }
     else if(rest.restrictionType == "GQBRestrictionStringDateBetween") {
         return new GQBRestrictionDateBetween(rest.property, rest.restrictionDateFrom, rest.restrictionDateTo, rest.applyToVarFrom, rest.applyToVarTo, rest.negation);
-    } 
+    }
     else if(rest.restrictionType == "GQBRestrictionDateBefore") {
         return new GQBRestrictionIntegerBetween(rest.property, rest.restrictionDateTo, rest.applyToVarTo, rest.negation);
     }

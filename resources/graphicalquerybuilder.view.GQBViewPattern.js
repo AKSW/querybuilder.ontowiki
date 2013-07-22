@@ -52,7 +52,7 @@ GQBViewPattern.prototype.toBlackBox = function() {
 
     // first hide all raphael objects (classes, connections, labels, buttons, etc):
     for (var i = 0; i < this.classes.length; i++) {
-        this.classes[i].hide(); 
+        this.classes[i].hide();
     }
     for (var i = 0; i < this.connections.length; i++) {
         this.connections[i].hide();
@@ -61,7 +61,7 @@ GQBViewPattern.prototype.toBlackBox = function() {
     // then only show one single class (the "black box"):
     this.blackBoxClass.show();
     // set that class to be "greyed out":
-    this.blackBoxClass.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color}); 
+    this.blackBoxClass.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});
     this.isBlackBoxed = true;
     //GQB.view.refreshCanvas();
 };
@@ -82,13 +82,13 @@ GQBViewPattern.prototype.fromBlackBox = function() {
     for (var i = 0; i < this.classes.length; i++) {
         if (this.classes[i].modelClass.id == this.blackBoxClass.id) continue;
         // first show the objects which were previously hidden:
-        this.classes[i].show(); 
+        this.classes[i].show();
 
         // we want the pattern to expand from the point where the black box is currently located,
         // so we move all classes to roughly that position (with some random variation):
-        this.classes[i].translate(this.blackBoxClass.x - this.classes[i].x + 70*Math.random() - 25, 
+        this.classes[i].translate(this.blackBoxClass.x - this.classes[i].x + 70*Math.random() - 25,
                                                                          this.blackBoxClass.y - this.classes[i].y + 70*Math.random() - 25);
- 
+
         // we set random initial velocites and no acceleration
         this.classes[i].vx = 100*Math.random() - 50;
         this.classes[i].vy = 100*Math.random() - 50;
@@ -139,7 +139,7 @@ GQBViewPattern.prototype.fromBlackBox = function() {
 
     // since we're returning from "black box" status, we want to set our black box class
     // back to normal color (was greyed out):
-    this.blackBoxClass.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color}); 
+    this.blackBoxClass.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color});
 
     this.isBlackBoxed = false;
 
@@ -151,7 +151,7 @@ GQBViewPattern.prototype.fromBlackBox = function() {
         GQB.view.runPhysSteps = 30;
         GQB.view.runPhysics(50, true);  // (step interval is 40ms)
     }
-    // if another simulation is already running, but only temporarily: 
+    // if another simulation is already running, but only temporarily:
     else if (GQB.view.runPhysSteps > 0) {
         // we set the simulation duration to 30 steps total:
         this.blackBoxClass.m = 10000000;  // large mass so black box class doesn't move
@@ -175,8 +175,8 @@ GQBViewPattern.prototype.fromBlackBox = function() {
  *                      or anything else to reset the black box button.
  */
 GQBViewPattern.prototype.setBlackBoxClass = function(newBBClass) {
-    if (!newBBClass || (!newBBClass.id && newBBClass.id != 0) 
-            || !this.findViewClassById(newBBClass.id)) 
+    if (!newBBClass || (!newBBClass.id && newBBClass.id != 0)
+            || !this.findViewClassById(newBBClass.id))
     newBBClass = false;
 
     if (this.blackBoxClass) this.blackBoxClass.removeBlackBoxIcon();
@@ -220,7 +220,7 @@ GQBViewPattern.prototype.addClassToPatternAtPos = function (classToAdd, existing
         newViewClass.raphLabel.attr("font-style","italic");
     }
 
-    // add the new class to this pattern's list of classes  
+    // add the new class to this pattern's list of classes
     this.classes.push(newViewClass);
 
     // if we just added the first class to the pattern, add a black box button:
@@ -260,8 +260,8 @@ GQBViewPattern.prototype.addClassToPatternAtPos = function (classToAdd, existing
     return newViewClass;
 };
 
-/** 
-  * Deletes all classes and connections from this GQBViewPattern, 
+/**
+  * Deletes all classes and connections from this GQBViewPattern,
   * but does not make any changes in the model.
   */
 GQBViewPattern.prototype.deletePattern = function() {
@@ -288,10 +288,10 @@ GQBViewPattern.prototype.deletePattern = function() {
  */
 GQBViewPattern.prototype.deleteClass = function(viewClassToDelete) {
     if (!viewClassToDelete || !this.findViewClassById(viewClassToDelete.id)) return null;
-    
+
     // we may need to remove multiple classes and connections:
     var viewClassesToRemove = new Array();
-    var connectionsToRemove = new Array();   
+    var connectionsToRemove = new Array();
 
     // first class to remove is the passed class:
     viewClassesToRemove.push(viewClassToDelete);
@@ -305,12 +305,12 @@ GQBViewPattern.prototype.deleteClass = function(viewClassToDelete) {
         if (this.connections[i].endViewClass.id == viewClassToDelete.id) {
             connectionsToRemove.push(this.connections[i]);
             theParentClass = this.connections[i].startViewClass.modelClass;
-            break;  
+            break;
         }
     }
-    
+
     // find which classes and connections should be removed:
-    // (loop through all connections adding the end classes of those to 
+    // (loop through all connections adding the end classes of those to
     //  be deleted to an array)
     do {
         var changed = false;
@@ -318,19 +318,19 @@ GQBViewPattern.prototype.deleteClass = function(viewClassToDelete) {
             var curStartId = this.connections[i].startViewClass.id;
             var idMatchesClassToRemove = false;  // will the start class of this connection be removed?
             for (var j = 0; j < viewClassesToRemove.length; j++) {
-                if (viewClassesToRemove[j].id == curStartId) 
+                if (viewClassesToRemove[j].id == curStartId)
                     idMatchesClassToRemove = true;
-            }  
+            }
             // we need to remove the end class as well,
             // but only if we haven't seen it yet:
             if (idMatchesClassToRemove) {
-                var endClassAlreadyFound = false;  
+                var endClassAlreadyFound = false;
                 for (var j = 0; j < viewClassesToRemove.length; j++) {
                     if (viewClassesToRemove[j].id == this.connections[i].endViewClass.id) {
                         endClassAlreadyFound = true;
                         break;
                     }
-                } 
+                }
                 if (!endClassAlreadyFound) {
                     viewClassesToRemove.push(this.connections[i].endViewClass);
                     connectionsToRemove.push(this.connections[i]);
@@ -361,7 +361,7 @@ GQBViewPattern.prototype.deleteClass = function(viewClassToDelete) {
         // if it's the only class left:
         if (this.classes.length <= 1) {
             ; // do nothing
-        } 
+        }
         // otherwise set a new black box class before removing the old one:
         else {
             this.setBlackBoxClass(this.classes[this.classes[0].id != this.blackBoxClass.id ? 0 : 1]);
@@ -398,7 +398,7 @@ function GQBViewClass (_id, _parentViewPattern) {
     this.y = 0.0;                // y position (top side) in pixels from top left of canvas
     this.vx = 0.0;            // x velocity in pixels/second (+ right, - left)
     this.vy = 0.0;            // y velocity in pixels/second (+ down, - up)
-    this.ax = 0.0;            // x acceleration in pix/sec/sec 
+    this.ax = 0.0;            // x acceleration in pix/sec/sec
     this.ay = 0.0;            // y acceleration in pix/sec/sec
     this.width = 1;            // width in pixels of box
     this.height = 1;        // height in pixels of box
@@ -409,7 +409,7 @@ function GQBViewClass (_id, _parentViewPattern) {
     this.gdec = 11;
     this.bdec = 15;
     // whether or not this object will change color during a physical simulation:
-    this.dontChangeColor = (GQB.view.runPhysSteps != -1);  
+    this.dontChangeColor = (GQB.view.runPhysSteps != -1);
 
     // whether or not this GQBViewClass is currently in "wait" mode
     // (i.e. displaying a spinner icon)
@@ -476,8 +476,8 @@ GQBViewClass.prototype.initAtPos = function(_x, _y, label) {
     this.m = this.width * this.height;
 
     // create Raphael objects (Box, label, trash icon)
-    this.raphLabel = GQB.view.raphaelCanvas.text(this.x+(label.length*4)+2, this.y+16, label); 
-    this.raphBox = GQB.view.raphaelCanvas.rect(this.x, this.y, this.width, this.height, 10); 
+    this.raphLabel = GQB.view.raphaelCanvas.text(this.x+(label.length*4)+2, this.y+16, label);
+    this.raphBox = GQB.view.raphaelCanvas.rect(this.x, this.y, this.width, this.height, 10);
     this.raphTrashIcon = GQB.view.raphaelCanvas.image(urlBase+"extensions/components/graphicalquerybuilder/resources/images/canvas-btn-close.png", this.x-1, this.y-1, 13, 13);
     this.raphTrashIcon.node.setAttribute("class", "trashicon");
     this.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color, "fill-opacity": 0, "stroke-width": 2});
@@ -490,7 +490,7 @@ GQBViewClass.prototype.initAtPos = function(_x, _y, label) {
     this.raphTrashIcon.parentGQBViewClass = this;
 
     // set mousedown handler for the class box:
-    this.raphBox.mousedown(function(e) { 
+    this.raphBox.mousedown(function(e) {
         // the GQBViewClass which corresponds to the moused down box:
         var parentVClass = this.parentGQBViewClass;
         // store mouse position for use in dragging:
@@ -518,8 +518,8 @@ GQBViewClass.prototype.initAtPos = function(_x, _y, label) {
             GQB.view.selectedViewClass.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color});
             // in case the selected box was black boxed, it must be turned grey:
             if (GQB.view.selectedViewClass.parentViewPattern && GQB.view.selectedViewClass.parentViewPattern.isBlackBoxed) {
-                GQB.view.selectedViewClass.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});  
-            } 
+                GQB.view.selectedViewClass.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});
+            }
         }
         // then set my box color to the selection color:
         this.attr({fill: GQB.view.sel_color, stroke: GQB.view.sel_color});
@@ -530,23 +530,23 @@ GQBViewClass.prototype.initAtPos = function(_x, _y, label) {
     });
 
     // the mouseover handler changes the box color and keeps track of the moused-over object:
-    this.raphBox.mouseover(function(){ 
+    this.raphBox.mouseover(function(){
         GQB.view.mousedOverViewClass = this.parentGQBViewClass;
-        this.attr({fill: GQB.view.mouseover_color, stroke: GQB.view.mouseover_color}); 
+        this.attr({fill: GQB.view.mouseover_color, stroke: GQB.view.mouseover_color});
     });
 
     // the mouseout handler reverses the mouseover handler by changing the color back to normal,
     // and clearing the current moused over object:
-    this.raphBox.mouseout(function(){ 
-        GQB.view.mousedOverViewClass = false; 
+    this.raphBox.mouseout(function(){
+        GQB.view.mousedOverViewClass = false;
         // change our color depending on whether we are selected, black boxed or normal:
         if (GQB.view.selectedViewClass.id == this.parentGQBViewClass.id) {
-            this.attr({fill: GQB.view.sel_color, stroke: GQB.view.sel_color}); 
+            this.attr({fill: GQB.view.sel_color, stroke: GQB.view.sel_color});
         } else if (this.parentGQBViewClass.parentViewPattern && this.parentGQBViewClass.parentViewPattern.isBlackBoxed) {
-            this.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});  
+            this.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});
         } else {
-            this.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color}); 
-        } 
+            this.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color});
+        }
     });
 
     // mouse down on the trash icon: ask user if this class should be deleted:
@@ -595,7 +595,7 @@ GQBViewClass.prototype.setLabel = function(newLabel) {
 
     if (this.raphLabel) this.raphLabel.remove();
 
-    this.raphLabel = GQB.view.raphaelCanvas.text(this.x+(newLabel.length*4)+2, this.y+16, newLabel); 
+    this.raphLabel = GQB.view.raphaelCanvas.text(this.x+(newLabel.length*4)+2, this.y+16, newLabel);
     if (this.parentViewPattern.modelPattern.startClass.id == this.modelClass.id)
         this.raphLabel.attr("font-style","italic");
 
@@ -614,7 +614,7 @@ GQBViewClass.prototype.setLabel = function(newLabel) {
     this.raphSpinnerIcon.attr("x", this.x+this.width/2-8);
 
     // hide the newly changed label if we're black boxed and not the start class:
-    if(this.parentViewPattern.isBlackBoxed && this.parentViewPattern.blackBoxClass.modelClass.id != this.modelClass.id) 
+    if(this.parentViewPattern.isBlackBoxed && this.parentViewPattern.blackBoxClass.modelClass.id != this.modelClass.id)
         this.raphLabel.hide();
 };
 
@@ -655,7 +655,7 @@ GQBViewClass.prototype.removeBlackBoxIcon = function() {
  * Selects this GQBViewClass by changing its color.
  */
 GQBViewClass.prototype.select = function() {
-    this.raphBox.attr({fill: GQB.view.sel_color, stroke: GQB.view.sel_color});  
+    this.raphBox.attr({fill: GQB.view.sel_color, stroke: GQB.view.sel_color});
 };
 
 /**
@@ -663,10 +663,10 @@ GQBViewClass.prototype.select = function() {
  */
 GQBViewClass.prototype.unselect = function() {
     if (this.parentViewPattern.isBlackBoxed) {
-        this.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});  
+        this.raphBox.attr({fill: GQB.view.blackbox_color, stroke: GQB.view.blackbox_color});
     } else {
-        this.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color}); 
-    } 
+        this.raphBox.attr({fill: GQB.view.box_color, stroke: GQB.view.box_color});
+    }
 };
 
 /**
@@ -737,7 +737,7 @@ function GQBViewConnection(_startViewClass, _endViewClass, _modelLink, _label) {
     this.dontCalcAsSpring = false;
 
     // The actual Raphael connection object:
-    this.raphConnection = GQB.view.raphaelCanvas.connectionWithArrowAndLabel(this.startViewClass.raphBox, 
+    this.raphConnection = GQB.view.raphaelCanvas.connectionWithArrowAndLabel(this.startViewClass.raphBox,
                                                                                         this.endViewClass.raphBox, GQB.view.connection_color, null, this.label);
 
     // methods

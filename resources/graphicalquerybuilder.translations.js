@@ -596,9 +596,9 @@ GQB.translate = function(word){
         foundTransStr = this.translations[word][this.currLang];
     }
     var extraArgCounter = 1;
-    
+
     while (arguments[extraArgCounter] != undefined) {
-        
+
         arguments[extraArgCounter] = arguments[extraArgCounter] + ""; // cast to string
         var placeholder = "%"+extraArgCounter;
         // strip "%" out of the argument, just in case...

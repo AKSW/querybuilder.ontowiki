@@ -6,7 +6,7 @@ jQuery.fn.dump = function(showTypes, showAttributes) {
 jQuery.dump = function(object, showTypes, showAttributes) {
   var dump = '';
   var st = typeof showTypes == 'undefined' ? true : showTypes;
-  var sa = typeof showAttributes == 'undefined' ? true : showAttributes;  
+  var sa = typeof showAttributes == 'undefined' ? true : showAttributes;
   var winName = 'dumpWin';
   var w = 760;
   var h = 500;
@@ -14,32 +14,32 @@ jQuery.dump = function(object, showTypes, showAttributes) {
   var topPos = screen.height ? (screen.height - h) / 2 : 0;
   var settings = 'height=' + h + ',width=' + w + ',top=' + topPos + ',left=' + leftPos + ',scrollbars=yes,menubar=yes,status=yes,resizable=yes';
   var title = 'Dump';
-  var script = 'function tRow(s) {t = s.parentNode.lastChild;tTarget(t, tSource(s)) ;}function tTable(s) {var switchToState = tSource(s) ;var table = s.parentNode.parentNode;for (var i = 1; i < table.childNodes.length; i++) {t = table.childNodes[i] ;if (t.style) {tTarget(t, switchToState);}}}function tSource(s) {if (s.style.fontStyle == "italic" || s.style.fontStyle == null) {s.style.fontStyle = "normal";s.title = "click to collapse";return "open";} else {s.style.fontStyle = "italic";s.title = "click to expand";return "closed" ;}}function tTarget (t, switchToState) {if (switchToState == "open") {t.style.display = "";} else {t.style.display = "none";}}';    
-  
+  var script = 'function tRow(s) {t = s.parentNode.lastChild;tTarget(t, tSource(s)) ;}function tTable(s) {var switchToState = tSource(s) ;var table = s.parentNode.parentNode;for (var i = 1; i < table.childNodes.length; i++) {t = table.childNodes[i] ;if (t.style) {tTarget(t, switchToState);}}}function tSource(s) {if (s.style.fontStyle == "italic" || s.style.fontStyle == null) {s.style.fontStyle = "normal";s.title = "click to collapse";return "open";} else {s.style.fontStyle = "italic";s.title = "click to expand";return "closed" ;}}function tTarget (t, switchToState) {if (switchToState == "open") {t.style.display = "";} else {t.style.display = "none";}}';
+
  var _recurse = function (o, type) {
     var i;
     var j = 0;
     var r = '';
     type = _dumpType(o);
-    switch (type) {        
+    switch (type) {
       case 'regexp':
         var t = type;
         r += '<table' + _dumpStyles(t,'table') + '><tr><th colspan="2"' + _dumpStyles(t,'th') + '>' + t + '</th></tr>';
-        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>RegExp: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';  
+        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>RegExp: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';
         j++;
         break;
       case 'date':
         var t = type;
         r += '<table' + _dumpStyles(t,'table') + '><tr><th colspan="2"' + _dumpStyles(t,'th') + '>' + t + '</th></tr>';
-        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>Date: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';  
+        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>Date: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';
         j++;
         break;
       case 'function':
         var t = type;
-        var a = o.toString().match(/^.*function.*?\((.*?)\)/im); 
+        var a = o.toString().match(/^.*function.*?\((.*?)\)/im);
         var args = (a == null || typeof a[1] == 'undefined' || a[1] == '') ? 'none' : a[1];
         r += '<table' + _dumpStyles(t,'table') + '><tr><th colspan="2"' + _dumpStyles(t,'th') + '>' + t + '</th></tr>';
-        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>Arguments: </i></td><td' + _dumpStyles(type,'td-value') + '>' + args + '</td></tr><tr><td' + _dumpStyles('arguments','td-key') + '><i>Function: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';  
+        r += '<tr><td colspan="2"' + _dumpStyles(t,'td-value') + '><table' + _dumpStyles('arguments','table') + '><tr><td' + _dumpStyles('arguments','td-key') + '><i>Arguments: </i></td><td' + _dumpStyles(type,'td-value') + '>' + args + '</td></tr><tr><td' + _dumpStyles('arguments','td-key') + '><i>Function: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o + '</td></tr></table>';
         j++;
         break;
       case 'domelement':
@@ -49,41 +49,41 @@ jQuery.dump = function(object, showTypes, showAttributes) {
           for (i in o) {if (!/innerHTML|outerHTML/i.test(i)) {attr += i + ': ' + o[i] + '<br />';}}
         }
         r += '<table' + _dumpStyles(t,'table') + '><tr><th colspan="2"' + _dumpStyles(t,'th') + '>' + t + '</th></tr>';
-        r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Node Name: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.nodeName.toLowerCase() + '</td></tr>';  
-        r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Node Type: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.nodeType + '</td></tr>'; 
+        r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Node Name: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.nodeName.toLowerCase() + '</td></tr>';
+        r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Node Type: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.nodeType + '</td></tr>';
         r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Node Value: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.nodeValue + '</td></tr>';
         if (sa) {
-          r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Attributes: </i></td><td' + _dumpStyles(type,'td-value') + '>' + attr + '</td></tr>';          
-          r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>innerHTML: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.innerHTML + '</td></tr>'; 
+          r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>Attributes: </i></td><td' + _dumpStyles(type,'td-value') + '>' + attr + '</td></tr>';
+          r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>innerHTML: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.innerHTML + '</td></tr>';
           if (typeof o.outerHTML != 'undefined') {
-            r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>outerHTML: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.outerHTML + '</td></tr>'; 
+            r += '<tr><td' + _dumpStyles(t,'td-key') + '><i>outerHTML: </i></td><td' + _dumpStyles(type,'td-value') + '>' + o.outerHTML + '</td></tr>';
           }
         }
         j++;
-        break;        
+        break;
     }
     if (/object|array/.test(type)) {
       for (i in o) {
         var t = _dumpType(o[i]);
         if (j < 1) {
           r += '<table' + _dumpStyles(type,'table') + '><tr><th colspan="2"' + _dumpStyles(type,'th') + '>' + type + '</th></tr>';
-          j++;      
+          j++;
         }
-        if (typeof o[i] == 'object' && o[i] != null) { 
-          r += '<tr><td' + _dumpStyles(type,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + _recurse(o[i], t) + '</td></tr>';    
+        if (typeof o[i] == 'object' && o[i] != null) {
+          r += '<tr><td' + _dumpStyles(type,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + _recurse(o[i], t) + '</td></tr>';
         } else if (typeof o[i] == 'function') {
-          r += '<tr><td' + _dumpStyles(type ,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + _recurse(o[i], t) + '</td></tr>';      
+          r += '<tr><td' + _dumpStyles(type ,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + _recurse(o[i], t) + '</td></tr>';
         } else {
-          r += '<tr><td' + _dumpStyles(type,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + o[i] + '</td></tr>';  
+          r += '<tr><td' + _dumpStyles(type,'td-key') + '>' + i + (st ? ' [' + t + ']' : '') + '</td><td' + _dumpStyles(type,'td-value') + '>' + o[i] + '</td></tr>';
         }
       }
     }
     if (j == 0) {
-      r += '<table' + _dumpStyles(type,'table') + '><tr><th colspan="2"' + _dumpStyles(type,'th') + '>' + type + ' [empty]</th></tr>';     
+      r += '<table' + _dumpStyles(type,'table') + '><tr><th colspan="2"' + _dumpStyles(type,'th') + '>' + type + ' [empty]</th></tr>';
     }
     r += '</table>';
     return r;
-  };    
+  };
   var _dumpStyles = function(type, use) {
   var r = '';
   var table = 'font-size:xx-small;font-family:verdana,arial,helvetica,sans-serif;cell-spacing:2px;';
@@ -98,7 +98,7 @@ jQuery.dump = function(object, showTypes, showAttributes) {
     case 'undefined':
     case 'object':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#0000cc;"';
           break;
         case 'th':
@@ -114,7 +114,7 @@ jQuery.dump = function(object, showTypes, showAttributes) {
       break;
     case 'array':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#006600;"';
           break;
         case 'th':
@@ -126,11 +126,11 @@ jQuery.dump = function(object, showTypes, showAttributes) {
         case 'td-value':
           r = ' style="' + td + 'background-color:#fff;"';
           break;
-      }    
+      }
       break;
     case 'function':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#aa4400;"';
           break;
         case 'th':
@@ -142,21 +142,21 @@ jQuery.dump = function(object, showTypes, showAttributes) {
         case 'td-value':
           r = ' style="' + td + 'background-color:#fff;"';
           break;
-      }    
+      }
       break;
     case 'arguments':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#dddddd;cell-spacing:3;"';
           break;
         case 'td-key':
           r = ' style="' + th + 'background-color:#eeeeee;color:#000000;cursor:hand;cursor:pointer;"' + tdScript;
-          break;      
-      }    
+          break;
+      }
       break;
     case 'regexp':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#CC0000;cell-spacing:3;"';
           break;
         case 'th':
@@ -167,12 +167,12 @@ jQuery.dump = function(object, showTypes, showAttributes) {
           break;
         case 'td-value':
           r = ' style="' + td + 'background-color:#fff;"';
-          break;          
-      }    
+          break;
+      }
       break;
     case 'date':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#663399;cell-spacing:3;"';
           break;
         case 'th':
@@ -183,14 +183,14 @@ jQuery.dump = function(object, showTypes, showAttributes) {
           break;
         case 'td-value':
           r = ' style="' + td + 'background-color:#fff;"';
-          break;          
-      }    
+          break;
+      }
       break;
     case 'domelement':
     case 'document':
     case 'window':
       switch (use) {
-        case 'table':  
+        case 'table':
           r = ' style="' + table + 'background-color:#FFCC33;cell-spacing:3;"';
           break;
         case 'th':
@@ -201,9 +201,9 @@ jQuery.dump = function(object, showTypes, showAttributes) {
           break;
         case 'td-value':
           r = ' style="' + td + 'background-color:#fff;"';
-          break;          
-      }    
-      break;      
+          break;
+      }
+      break;
   }
   return r;
   };
@@ -244,7 +244,7 @@ jQuery.dump = function(object, showTypes, showAttributes) {
         case RegExp:
           return 'regexp';
         case Object:
-          t = 'object';    
+          t = 'object';
         break;
         case ReferenceError:
           return 'error';
@@ -283,7 +283,7 @@ jQuery.dump = function(object, showTypes, showAttributes) {
       }
     }
     return t;
-  };  
+  };
   dump += (/string|number|undefined|boolean/.test(typeof(object)) || object == null) ? object : _recurse(object, typeof object);
   winName = window.open('', '', settings);
   if (jQuery.browser.msie || jQuery.browser.browser == 'opera' || jQuery.browser.browser == 'safari') {
@@ -297,5 +297,5 @@ jQuery.dump = function(object, showTypes, showAttributes) {
     ffs.appendChild(document.createTextNode(script));
     winName.document.getElementsByTagName('head')[0].appendChild(ffs);
   }
-  winName.focus();  
+  winName.focus();
 };

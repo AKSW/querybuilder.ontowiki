@@ -7,16 +7,16 @@
 GQB.getPositionOfDOMObj = function(elementId) {
     var element = document.getElementById(elementId);
 
-    var left = 0; 
+    var left = 0;
     var top = 0;
     // correct for scroll state: (not necessary when getting cursor pos through jquery (event.pageX/Y))
-    //var left = 0-window.pageXOffset;  // IE: document.documentElement.scrollLeft;   DOM standard: document.body.scrollLeft;    
+    //var left = 0-window.pageXOffset;  // IE: document.documentElement.scrollLeft;   DOM standard: document.body.scrollLeft;
     //var top = 0-window.pageYOffset;   // IE: document.documentElement.scrollTop;   DOM standard: document.body.scrollTop;
 
     while (element) {
         if (element.x) {  // absolute position
             left += element.x;
-            top += element.y; 
+            top += element.y;
             return {x:left, y:top};
         }
         left += element.offsetLeft;
@@ -50,7 +50,7 @@ function GQBView(){
     this.mainLayout;
 
     /** An array of GQBViewModelObjects which can keep track of
-     * various model objects as necessary 
+     * various model objects as necessary
      * @see GQBViewModelObject()
      */
     this.modelObjects = new Array();
@@ -67,7 +67,7 @@ function GQBView(){
 
     /** We need to keep track of dragged and moused over GQBViewClasses
     * for various reasons.  Two additional variables are needed when
-    * combining patterns (via union or intersection) */ 
+    * combining patterns (via union or intersection) */
     this.draggedViewClass = false;
     this.mousedOverViewClass = false;
     this.draggedViewClassToCombine = false;
@@ -85,14 +85,14 @@ function GQBView(){
     /** Our trash is a Raphael icon */
     this.trash;
 
-    /** We store the mouse position when an object from the "west" 
+    /** We store the mouse position when an object from the "west"
     * tree view is dropped onto the canvas.  This is used to
     * create a box at that position when the model calls our
     * add methods*/
     this.dropCursorPosX = 0;
     this.dropCursorPosY = 0;
 
-    /** color constants 
+    /** color constants
     * color of normal boxes*/
     this.box_color = "#000000";
     /** color of selected boxes */
@@ -118,7 +118,7 @@ function GQBView(){
     /** Variables used in displaying the results table:
     * Each results column is itself an array of result strings.
     * the first entry in each result column is the column header.
-    * All result columns have the same length (and may thus 
+    * All result columns have the same length (and may thus
     * contain "blank" results). */
     this.resultColumns = new Array();
 
@@ -146,7 +146,7 @@ function GQBView(){
     /**
      * It is possible to resize results columns by dragging certain handles.
      * When a column is being resized, we store a jQuery object referring to that
-     * columns header (<th>) element in these variables: 
+     * columns header (<th>) element in these variables:
      */
     this.draggedColLeftHead = false;
     this.draggedColRightHead = false;
@@ -246,7 +246,7 @@ function GQBView(){
 /**
  * The results table is displayed in intervals, in order to improve performance
  * when displaying large result sets.  This function will stop the further display
- * of any results by clearing the corresponding interval (which was set by a 
+ * of any results by clearing the corresponding interval (which was set by a
  * call to window.setInterval()).
  */
 GQBView.prototype.stopDisplayingRows = function() {
@@ -255,7 +255,7 @@ GQBView.prototype.stopDisplayingRows = function() {
     this.rowDispInterval = false;
 };
 
-/** 
+/**
  * Refreshes the Rafael canvas.
  * This is no longer needed.
  */
@@ -264,7 +264,7 @@ GQBView.prototype.refreshCanvas = function() {
     // force raphael to refresh the canvas by resizing it,
     // this will clear graphical streaks:
     this.raphaelCanvas.setSize(this.raphCanvasWidth+1,this.raphCanvasHeight);
-    this.raphaelCanvas.setSize(this.raphCanvasWidth,this.raphCanvasHeight); 
+    this.raphaelCanvas.setSize(this.raphCanvasWidth,this.raphCanvasHeight);
 };
 
 /**
@@ -286,11 +286,11 @@ GQBView.prototype.deletePattern = function(viewPattern) {
     this.clearClassProperties();
 };
 
-/** 
+/**
  * Deletes the passed GQBViewClass from its parent GQBViewPattern and
  * the corresponding model class from its parent model pattern.
  * All child classes of the passed class are also removed.
- * @param viewClass The GQBViewClass to be deleted. 
+ * @param viewClass The GQBViewClass to be deleted.
  */
 GQBView.prototype.deleteClass = function(viewClass) {
     if (!viewClass || !viewClass.parentViewPattern) return;
@@ -317,13 +317,13 @@ GQBView.prototype.deleteClass = function(viewClass) {
     //this.refreshCanvas();
 };
 
-/** 
+/**
  * The following function sorts the result columns.
  * The specified column (cIdx) will be sorted in ascending
  * or descending order (based on mode), and all other columns
  * will be correspondingly matched.  This function actually
  * orders the mapping "resultRowsMap", which is a permutation
- * of the row indices, so that no actual swapping of column 
+ * of the row indices, so that no actual swapping of column
  * data must occur. All columns must have the same length.
  * @param cIdx The index of the column to be used for sorting.
  * @param mode Sort direction: either "up" or "down".
@@ -386,7 +386,7 @@ GQBView.prototype.sortColumns = function(cIdx, mode) {
  * be set anywhere else!!), and are used as additional input to this function.
  * The classes are assumed to be separate (with different ids) and the properties
  * for the moused over class are assumed to be ready.  We also assume that the classes
- * are of the same type (meaning their uris are identical). These checks are performed 
+ * are of the same type (meaning their uris are identical). These checks are performed
  * in the mouseup handler (and thus are not repeated here).
  * @param mode Either "union" or "intersection".
  */
@@ -422,25 +422,25 @@ GQBView.prototype.combineDraggedAndMousedOverClasses = function(mode){
 
         // add each class in the dragged pattern to the moused over pattern,
         // except for the class which was itself dragged (which gets deleted):
-        for (var i = 0; i < draggedViewPattern.classes.length; i++) { 
+        for (var i = 0; i < draggedViewPattern.classes.length; i++) {
             if (draggedViewPattern.classes[i].id != draggedViewClass.id) {
                 mousedOverViewPattern.classes.push(draggedViewPattern.classes[i]);
                 draggedViewPattern.classes[i].parentViewPattern = mousedOverViewPattern;
-            } 
+            }
         }
         // add each connection in the dragged pattern to the moused over pattern,
         // except for connections from the dragged class itself (which is start class,
-        // so has no incoming connections).  We must reattach all outgoing 
+        // so has no incoming connections).  We must reattach all outgoing
         // connections from the dragged class onto the moused over class:
         for (var i = 0; i < draggedViewPattern.connections.length; i++) {
             if (draggedViewPattern.connections[i].startViewClass.id != draggedViewClass.id) {
-                mousedOverViewPattern.connections.push(draggedViewPattern.connections[i]);    
-            } 
+                mousedOverViewPattern.connections.push(draggedViewPattern.connections[i]);
+            }
             else {
               // remove and reattach:
                 draggedViewPattern.connections[i].remove();
-                var con = new GQBViewConnection(mousedOverViewClass, 
-                                                                                        draggedViewPattern.connections[i].endViewClass, 
+                var con = new GQBViewConnection(mousedOverViewClass,
+                                                                                        draggedViewPattern.connections[i].endViewClass,
                                                                                         draggedViewPattern.connections[i].modelLink,
                                                                                         draggedViewPattern.connections[i].label);
                 mousedOverViewPattern.connections.push(con);
@@ -466,7 +466,7 @@ GQBView.prototype.combineDraggedAndMousedOverClasses = function(mode){
  */
 GQBView.prototype.findPatternOfClass = function(viewClass) {
     if (!viewClass) return null;
-    
+
     for(var i = 0; i < this.patterns.length; i++) {
         for(var j = 0; j < this.patterns[i].classes.length; j++) {
             if(this.patterns[i].classes[j].id == viewClass.id)
@@ -477,7 +477,7 @@ GQBView.prototype.findPatternOfClass = function(viewClass) {
 };
 
 /**
- * 
+ *
  * @param {Object} id
  */
 GQBView.prototype.findModelObjectById = function(id){
@@ -485,7 +485,7 @@ GQBView.prototype.findModelObjectById = function(id){
         if(this.modelObjects[i].id == id){
             return this.modelObjects[i].obj;
         }
-    } 
+    }
     return null;
 };
 
@@ -505,7 +505,7 @@ GQBView.prototype.findPatternById = function(id) {
 };
 
 /**
- * Searches through all GQBViewPatterns of the view for 
+ * Searches through all GQBViewPatterns of the view for
  * a GQBViewClass with the passed id.
  * @param id The id of the GQBViewClass to find.
  * @return The GQBViewClass with id or null if not found.
@@ -528,7 +528,7 @@ GQBView.prototype.findModelObjectOfObject = function(obj){
         if(this.modelObjects[i].obj === obj){
             return this.modelObjects[i];
         }
-    } 
+    }
     return null;
 };
 
@@ -634,7 +634,7 @@ GQBView.prototype.addRdfClassesToTree = function (nclasses){
                 if (!GQB.view.findModelObjectOfObject(nclasses[i].parents[j])) {
                     allParentsFound = false;
                     break;
-                } 
+                }
             }
             if (!allParentsFound) continue;
             classToAddMOId = this.addModelObject(nclasses[i]);
@@ -651,9 +651,9 @@ GQBView.prototype.addRdfClassesToTree = function (nclasses){
                 htmlToAppend = $("<li class='open lastCollapsable'><span class='folder basicclass' modelId=\""+classToAddMOId+"\">"+nclasses[i].getLabel()+"</span><ul><li><span style=\"display:none;\">dummy</span></li></ul></li>");
             }
 
-            if (nclasses[i].parents.length == 0) 
+            if (nclasses[i].parents.length == 0)
                 htmlToAppend.appendTo("#gqbsavedqueriestree-basic");
-            else 
+            else
                 htmlToAppend.appendTo($(".basicclass[modelId='"+this.findModelObjectOfObject(nclasses[i].directParent).id+"']").siblings("ul"));
             if (nclasses[i].children.length != 0)
                 $("#gqbsavedqueriestree").treeview({add:htmlToAppend});
@@ -695,7 +695,7 @@ GQBView.prototype.addQueriesToTree = function (queries){
  */
 GQBView.prototype.addQueryToTree = function(query){
     //find folder
-    var folder = $('#gqbsavedqueriestree-saved-categories li[name='+query.type.getLabel()+']'); 
+    var folder = $('#gqbsavedqueriestree-saved-categories li[name='+query.type.getLabel()+']');
     if(folder.size() == 0){
         folder = $("<li class='open lastCollapsable' name=\""+query.type.getLabel()+"\"><span class='folder' modelId=\""+this.addModelObject(query.type)+"\">"+query.type.getLabel()+"</span><ul><li><span style=\"display:none;\">dummy</span></li></ul></li>").prependTo("#gqbsavedqueriestree-saved-categories");
         $("#gqbsavedqueriestree").treeview({add:folder});
@@ -731,7 +731,7 @@ GQBView.prototype.addQueryToTree = function(query){
 
 /**
  * Adds a new GQBViewPattern to the view which corresponds to
- * the passed GQBPattern (model pattern).  This function is 
+ * the passed GQBPattern (model pattern).  This function is
  * called by the controller whenever a pattern is added to the model.
  * @param pattern The GQBPattern which corresponds to the GQBViewPattern to be added.
  */
@@ -746,9 +746,9 @@ GQBView.prototype.addPatternToCanvas = function (pattern){
  * @param pattern The GQBQueryPattern which has been expanded.
  * @param classToAdd The GQBClass which has been added to "pattern".
  * @param existingParentClass The GQBClass which is the new parent of "classToAdd" in the model.
- * @param x (optional) Canvas x position of the new boxes center point.  
+ * @param x (optional) Canvas x position of the new boxes center point.
  *                        If ommitted: uses last mouse drop position.
- * @param y (optional) Canvas y position of the new boxes center point.  
+ * @param y (optional) Canvas y position of the new boxes center point.
  *                        If ommitted: uses last mouse drop position.
  */
 GQBView.prototype.addClassToPatternAtPos = function (pattern, classToAdd, existingParentClass, x, y) {
@@ -813,7 +813,7 @@ GQBView.prototype.setBlackBoxClass = function(modelClass) {
 };
 
 /**
- * Hides the current result table and displays a spinner animation 
+ * Hides the current result table and displays a spinner animation
  * updating is taking place.
  * This function calls getResults().
  */
@@ -835,7 +835,7 @@ GQBView.prototype.updateResult = function (){
         curPattern.getResults();
 
         $.scrollTo( '#gqbresulttable', 800 );
-        $('#gqbresulttable').hide(); 
+        $('#gqbresulttable').hide();
     } else {
         alert (GQB.translate("noPatternSelMsg"));
     }
@@ -869,11 +869,11 @@ GQBView.prototype.showResult = function (result){
         } else {
             $('.innercontent').append(result);
         }
-    
+
     return;
-    
-    //old 
-    
+
+    //old
+
     // Clear results table if no results:
     if (result.vars.length == 0) {
         this.clearResultsTable();
@@ -988,7 +988,7 @@ GQBView.prototype.displayResultsByRow = function(rowStart,rowEnd) {
                 "</td>"+
                 ((c < this.resultColumns.length - 1) ? "<td style=\"border-width: 0px; padding: 0px; vertical-align:middle;\"><a cIdx="+c+" class=\"gqb-button-movecolright\"><img src=\"../../../extensions/components/graphicalquerybuilder/resources/images/toggle-rt.gif\" title='"+GQB.translate("moveColRightLabel")+"'></a></td>" : "")+
                 "</tr></table>"));
-        
+
         //$('#gqbresulttable thead tr').append($('<th style=\"vertical-align:baseline;\"></th>').html(""+(((this.displayFirstColumn && c > 0) || c > 1) ? "<a cIdx="+c+" class=\"gqb-button-movecolleft\"><img src=\"../../../extensions/components/graphicalquerybuilder/resources/images/toggle-lt.gif\" title='"+GQB.translate("moveColLeftLabel")+"'></a>" : "") + (c < this.resultColumns.length - 1 ? "<a cIdx="+c+" class=\"gqb-button-movecolright\"><img src=\"../../../extensions/components/graphicalquerybuilder/resources/images/toggle-rt.gif\" title='"+GQB.translate("moveColRightLabel")+"'></a>" : "") + "<div style='width: 38px; float: right;' class='gqb-button-sort'><a cIdx="+c+" class=\"gqb-button-sortdesc\"><img src='../../../extensions/components/graphicalquerybuilder/resources/images/icon-downarrow.png' title='"+GQB.translate("sortColDescMsg")+"' /></a>&nbsp;<a cIdx="+c+" class=\"gqb-button-sortasc\"><img src='../../../extensions/components/graphicalquerybuilder/resources/images/icon-uparrow.png' title='"+GQB.translate("sortColAscMsg")+"' /></a></div><span class=\"gqbcolumnheader\" colId=\""+c+"\">"+this.resultColumns[c][0].substring(0,1).toUpperCase()+this.resultColumns[c][0].substring(1)+"</span>&nbsp;&nbsp;"));
     }
     // make the column header text editable by turning it into an
@@ -1040,7 +1040,7 @@ GQBView.prototype.displayResultsByRow = function(rowStart,rowEnd) {
  * the table like a column switch or a sort.
  */
 GQBView.prototype.refreshCurrentResultsTable = function() {
-    this.displayResultsByRow(this.curResultsPage*this.resultsPerPage+1, 
+    this.displayResultsByRow(this.curResultsPage*this.resultsPerPage+1,
                                                          (this.curResultsPage+1)*this.resultsPerPage)
 };
 
@@ -1174,7 +1174,7 @@ GQBView.prototype.showClassProperties = function() {
     else {
         $("#gqbclassrestrictionsnotexist").hide();
         $("#gqbclassrestrictionsexist").show();
-        
+
         if(currentclass.restrictions.mode == "AND"){
             var toplevellabel = GQB.translate("AND"); // &and;
             var secondlevellabel = GQB.translate("OR"); // &or;
@@ -1201,7 +1201,7 @@ GQBView.prototype.showClassProperties = function() {
                 var label = currentclass.restrictions.members[i].members[j].toString();
                 var deleteButton = $("<span id=\"gqbdeleterestrictionbutton"+i+"-"+j+"\" class=\"gqb-button gqb-button-delete gqb-button-delete-restriction\" toplevelIndex=\""+i+"\" secondlevelIndex=\""+j+"\" title=\""+GQB.translate("deleteRestMsg")+"\"></span>");
                 var editButton = $("<span id=\"gqbeditrestrictionbutton"+i+"-"+j+"\" class=\"gqb-button gqb-button-edit gqb-button-edit-restriction\" toplevelIndex=\""+i+"\" secondlevelIndex=\""+j+"\" title=\""+GQB.translate("editRestMsg")+"\"></span>");
-                var secondlevelelem = $("<li><span class=\"file gqbclassrestrictionssecondlevelmember\">"+label+"</span></li>");  
+                var secondlevelelem = $("<li><span class=\"file gqbclassrestrictionssecondlevelmember\">"+label+"</span></li>");
                 var editRestrictionPanel = $("<div id=\"editrestrictionpanel"+i+"-"+j+"\"></div>");
                 if(currentclass.restrictions.members[i].members.length > 1){
                     secondlevel.append(deleteButton);
@@ -1225,13 +1225,13 @@ GQBView.prototype.showClassProperties = function() {
             }
 
             $("#gqbclassrestrictionsexist").append(toplevelelem);
-            
+
         }
     }
     $('#gqbClassProperties').show();
 };
 
-/** 
+/**
  * This function is necessary for the expansion of "black boxes"!
  * GQBViewClasses are treated as physical objects with velocity, acceleration,
  * mass etc..  This is basically a simple (naive) physical simulation.
@@ -1256,12 +1256,12 @@ GQBView.prototype.runPhysics = function(dt, friction) {
             // the GQBViewClass object, which is currently being processed:
             var curBox = GQB.view.patterns[i].classes[j];
 
-            // we support color changing, but this is only used as 
+            // we support color changing, but this is only used as
             // part of an easter egg:
             if(curBox.dontChangeColor != true && Math.random()<0.65){
                 if(curBox.rdec>0) curBox.rdec--;
-                if(curBox.gdec<11) curBox.gdec++; 
-                if(curBox.bdec<15)curBox.bdec++;  
+                if(curBox.gdec<11) curBox.gdec++;
+                if(curBox.bdec<15)curBox.bdec++;
             }
             if (curBox.dontChangeColor != true)
                 curBox.raphBox.attr({"stroke":"#"+hex[curBox.rdec]+hex[curBox.gdec]+hex[curBox.bdec]});
@@ -1299,7 +1299,7 @@ GQBView.prototype.runPhysics = function(dt, friction) {
                 curBox.vx = -1 * curBox.vx;
                 // boxes turn red on collision (used in easter egg):
                 curBox.rdec = 15;  curBox.gdec = 0;  curBox.bdec = 0;
-            } 
+            }
             // right edge:
             else if (x+width > GQB.view.raphCanvasWidth) {
                 curBox.x += GQB.view.raphCanvasWidth-x-width-2;
@@ -1311,13 +1311,13 @@ GQBView.prototype.runPhysics = function(dt, friction) {
                 curBox.y += 2-y;
                 curBox.vy = -1 * curBox.vy;
                 curBox.rdec = 15;  curBox.gdec = 0;  curBox.bdec = 0;
-            } 
+            }
             // bottom edge:
             else if (y+height > GQB.view.raphCanvasHeight) {
                 curBox.y += GQB.view.raphCanvasHeight-y-height-2;
                 curBox.vy = -1 * curBox.vy;
                 curBox.rdec = 15;  curBox.gdec = 0;  curBox.bdec = 0;
-            }  
+            }
 
             // now we do collision detection with other boxes.
             // we check each possible pairing (except with ourselves):
@@ -1438,7 +1438,7 @@ GQBView.prototype.runPhysics = function(dt, friction) {
             var curBox = curCon.startViewClass;
             var otherBox = curCon.endViewClass;
             var x = curBox.x;
-            var y = curBox.y;   
+            var y = curBox.y;
             var width = curBox.width;
             var height = curBox.height;
             var width2 = otherBox.width;
@@ -1483,7 +1483,7 @@ GQBView.prototype.runPhysics = function(dt, friction) {
             curBox.vx /= 1.00020;
             curBox.vy /= 1.00020;
             otherBox.vx /= 1.00020;
-            otherBox.vy /= 1.00020; 
+            otherBox.vy /= 1.00020;
         }
     }
 
