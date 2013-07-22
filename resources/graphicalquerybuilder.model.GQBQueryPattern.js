@@ -509,8 +509,8 @@ GQBQueryPattern.prototype.getQueryAsString = function(limitClass){
     }
     
     this.sparqlQuery = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
-		PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \n\
-		SELECT " + this.selectPart + " \nFROM <" + GQB.model.graphs[0] + "> \nWHERE { \n" + this.wherePart + this.filterPart + "}";
+        PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \n\
+        SELECT " + this.selectPart + " \nFROM <" + GQB.model.graphs[0] + "> \nWHERE { \n" + this.wherePart + this.filterPart + "}";
     return this.sparqlQuery;
 };
 
@@ -618,9 +618,9 @@ GQBQueryPattern.prototype.restore = function(savedobj){
     this.selectedClass = {
         "id": savedobj.selectedClass
     };
-	if(!this.startClass)
-		this.startClass = new GQBClass();
-	
+    if(!this.startClass)
+        this.startClass = new GQBClass();
+    
     this.startClass.restore(savedobj.startClass, this);
     
     this.description = unescape(savedobj.description);
@@ -664,14 +664,14 @@ GQBQueryPattern.prototype.save = function(){
         type: typeuri,
         typelabel: typeLabel,
         query: queryStr,
-		generator: "gqb",
-		share: $("#savequerysharecheckbox").is(':checked') ? "true" : "false"
+        generator: "gqb",
+        share: $("#savequerysharecheckbox").is(':checked') ? "true" : "false"
     };
     
     var me = this;
     $.post(urlBase + "querybuilding/savequery", 
-		postdata, 
-		function(result){
+        postdata, 
+        function(result){
         if (result == "All OK") {
             var gqbEvent = new GQBEvent("saved", me);
             GQB.controller.notify(gqbEvent);

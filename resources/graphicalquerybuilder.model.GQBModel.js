@@ -158,8 +158,8 @@ GQBModel.prototype.findPatternOfClass = function(nclass){
  */
 GQBModel.prototype.getClasses = function(){
     var getClassesQuery = "SELECT DISTINCT ?type ?label \n \
-			WHERE { {?type a <http://www.w3.org/2000/01/rdf-schema#Class> } UNION {?type a <http://www.w3.org/2002/07/owl#Class> }. \n \
-			?type <http://www.w3.org/2000/01/rdf-schema#label> ?label . \n " +
+            WHERE { {?type a <http://www.w3.org/2000/01/rdf-schema#Class> } UNION {?type a <http://www.w3.org/2002/07/owl#Class> }. \n \
+            ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label . \n " +
     "OPTIONAL {?type <http://ns.ontowiki.net/SysOnt/order> ?order} }";
     
     //set base url of SPARQL query service
@@ -321,26 +321,26 @@ GQBModel.prototype.getSavedQueries = function(){
         return;
     }
     var getSavedQueriesQuery = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
-			PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \
-			SELECT ?query ?name ?desc ?type ?typelabel ?saveId\
-			WHERE { ?query rdf:type <" + GQB.patternClassName + "> . \
-			?query <" +
+            PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \
+            SELECT ?query ?name ?desc ?type ?typelabel ?saveId\
+            WHERE { ?query rdf:type <" + GQB.patternClassName + "> . \
+            ?query <" +
     GQB.patternName +
     "> ?name .\
-			OPTIONAL {?query <" +
+            OPTIONAL {?query <" +
     GQB.patternDesc +
     "> ?desc }.\
-			?query <" +
+            ?query <" +
     GQB.patternType +
     "> ?type .\
-			?query <" +
+            ?query <" +
     GQB.patternSaveId +
     "> ?saveId .\
-			?query <" +
+            ?query <" +
     GQB.patternTypeLabel +
     "> ?typelabel \
-			} \
-			ORDER BY ?type";
+            } \
+            ORDER BY ?type";
     
     //set base url of SPARQL query service
     var endpoint = urlBase + "service/sparql";

@@ -8,23 +8,23 @@
 */
 /*
 var GQB = { 
-	selectedModelUri : "http://www.uni-leipzig.de/unigeschichte/professorenkatalog/leipzig/", 
-	model : null, 
-	view : null, 
-	controller : null, 
-	userDbUri : "http://ns.ontowiki.net/GQB/UserQueries/user-Anonymous/", 
-	patternClassName : "http://ns.ontowiki.net/GQB/UserQueries/Pattern", 
-	patternJson : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Json", 
-	patternName : "http://www.w3.org/2000/01/rdf-schema#label", 
-	patternSaveId : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/SaveId", 
-	patternDesc : "http://www.w3.org/2000/01/rdf-schema#comment", 
-	patternType : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Type", 
-	patternTypeLabel : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/TypeLabel", 
-	patternDate : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Date", 
-	patternselectedClassUri : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/selectedClassUri", 
-	patternQuery : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Query",
-	currLang : "en",
-	supportedLangs : [ "en", "de" ]
+    selectedModelUri : "http://www.uni-leipzig.de/unigeschichte/professorenkatalog/leipzig/", 
+    model : null, 
+    view : null, 
+    controller : null, 
+    userDbUri : "http://ns.ontowiki.net/GQB/UserQueries/user-Anonymous/", 
+    patternClassName : "http://ns.ontowiki.net/GQB/UserQueries/Pattern", 
+    patternJson : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Json", 
+    patternName : "http://www.w3.org/2000/01/rdf-schema#label", 
+    patternSaveId : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/SaveId", 
+    patternDesc : "http://www.w3.org/2000/01/rdf-schema#comment", 
+    patternType : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Type", 
+    patternTypeLabel : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/TypeLabel", 
+    patternDate : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Date", 
+    patternselectedClassUri : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/selectedClassUri", 
+    patternQuery : "http://ns.ontowiki.net/GQB/UserQueries/Pattern/Query",
+    currLang : "en",
+    supportedLangs : [ "en", "de" ]
 };
 */
 
@@ -39,16 +39,16 @@ var GQB = {
 * @param obj The object to search for.
 */
 GQB.arrayRemoveObj = function(arr, obj) {
-	var remainder = new Array();
-	for (var i = 0; i < arr.length; i++) {
-		if (arr[i] != obj) {
-			remainder.push(arr[i]);  
-		}
-	}
-	arr.length = 0;
-	for (var i = 0; i < remainder.length; i++) {
-		arr.push(remainder[i]);
-	}
+    var remainder = new Array();
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] != obj) {
+            remainder.push(arr[i]);  
+        }
+    }
+    arr.length = 0;
+    for (var i = 0; i < remainder.length; i++) {
+        arr.push(remainder[i]);
+    }
 };
 
 /**
@@ -58,28 +58,28 @@ GQB.arrayRemoveObj = function(arr, obj) {
  * @return {boolean} true if the array contains the object
  */
 GQB.arrayContains = function(arr, obj) {
-	for (i in arr) {
-		if(arr[i] == obj){
-			return true;
-		}
-	}
-	return false;
+    for (i in arr) {
+        if(arr[i] == obj){
+            return true;
+        }
+    }
+    return false;
 };
 
 $(document).ready(function(){
-	if($.browser.msie){
-		$("#gqbmain").empty();
-		alert(unescape("Sorry, der MS Internet Explorer wird zur Zeit leider nicht unterst%FCtzt."));
-		return;
-	}
+    if($.browser.msie){
+        $("#gqbmain").empty();
+        alert(unescape("Sorry, der MS Internet Explorer wird zur Zeit leider nicht unterst%FCtzt."));
+        return;
+    }
 
-	if ($.inArray(GQB.currLang, GQB.supportedLangs) == -1) {
-		GQB.currLang = GQB.supportedLangs[0];
-	}
+    if ($.inArray(GQB.currLang, GQB.supportedLangs) == -1) {
+        GQB.currLang = GQB.supportedLangs[0];
+    }
 
-	GQB.model = new GQBModel(GQB.selectedModelUri);
-	GQB.view = new GQBView();
-	GQB.controller = new GQBController();
-	GQB.model.init();
-	GQB.view.init();
+    GQB.model = new GQBModel(GQB.selectedModelUri);
+    GQB.view = new GQBView();
+    GQB.controller = new GQBController();
+    GQB.model.init();
+    GQB.view.init();
 });
