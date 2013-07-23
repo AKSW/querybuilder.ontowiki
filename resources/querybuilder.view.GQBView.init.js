@@ -99,8 +99,8 @@ GQBView.prototype.initCanvas = function() {
     this.raphaelCanvas = Raphael("gqbcanvas", this.raphCanvasWidth, this.raphCanvasHeight);
 
     // add trash and trashmask to canvas:
-    this.trash = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/components/graphicalquerybuilder/resources/images/trash.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
-    var trashmask = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/components/graphicalquerybuilder/resources/images/trashmask.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
+    this.trash = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/querybuilder/resources/images/trash.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
+    var trashmask = this.raphaelCanvas.image(urlBase.substr(0,urlBase.length-10)+"extensions/querybuilder/resources/images/trashmask.png", this.raphCanvasWidth - 50, this.raphCanvasHeight - 50, 48, 48);
     trashmask.mousedown(function(){
         if (confirm(GQB.translate("confirmDelAllPatMsg"))) {
             for (var i = 0; i < GQB.view.patterns.length; i++) {

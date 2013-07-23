@@ -272,7 +272,7 @@ GQBClass.prototype.recalculateNumInstances = function(){
     var query = escape(GQB.model.findPatternOfClass(this).getQueryAsString(this)) + "\n LIMIT 1000";
 
     // send the request to the "getquerysize" service
-    var url = urlBase+'graphicalquerybuilder/getquerysize/?default-graph-uri='+GQB.model.graphs[0]+'&query='+query;
+    var url = urlBase+'querybuilder/getquerysize/?default-graph-uri='+GQB.model.graphs[0]+'&query='+query;
 
     var me = this;
     $.get(url, function(data) {

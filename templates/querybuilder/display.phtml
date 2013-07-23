@@ -5,7 +5,7 @@ $this->placeholder('main.window.innerwindows')->append(
                 'headinglevel' => 2,
                 'title'        => $this->_('Save Query'),
                 'content'      => $this->partial('partials/savepartial.phtml'),
-                'cssClasses'   => 'graphicalquerybuilder',
+                'cssClasses'   => 'querybuilder',
                 'cssId'        => 'savebox'
         ))
 );
@@ -14,7 +14,7 @@ $this->placeholder('main.window.innerwindows')->append(
         $this->partial('partials/window.phtml', array(
                 'headinglevel' => 2,
                 'title'        => $this->_('Properties'),
-                'content'      => $this->partial('graphicalquerybuilder/gqbsidepanel.phtml'),
+                'content'      => $this->partial('querybuilder/gqbsidepanel.phtml'),
                 'cssClasses'   => '',
                 'cssId'        => 'gqb-side-panel'
         ))

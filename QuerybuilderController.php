@@ -11,7 +11,7 @@ require_once 'OntoWiki/Toolbar.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  * @version    $Id: GraphicalquerybuilderController.php
  */
-class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
+class QuerybuilderController extends OntoWiki_Controller_Component {
     //uris that are used for saving
     public $baseQueryDbUri = 'http://ns.ontowiki.net/SysOnt/UserQueries/';
     public $saveQueryClassUri = 'http://ns.ontowiki.net/SysOnt/SparqlQuery';
@@ -37,7 +37,7 @@ class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
      * Default action. Forwards to get action.
      */
     public function __call($action, $params) {
-        $this->_forward('display', 'graphicalquerybuilder');
+        $this->_forward('display', 'querybuilder');
     }
 
     public function init() {
@@ -52,43 +52,47 @@ class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
         */
         parent :: init();
 
+        $ow = OntoWiki::getInstance();
         // setup the tabbed navigation
-        OntoWiki_Navigation :: reset();
+        $ow->getNavigation()->reset();
+
         if (class_exists("QuerybuildingHelper")) {
-            OntoWiki_Navigation :: register('listquery', array (
-                'controller' => "querybuilding",
-                'action' => "listquery",
-                'name' => "Saved Queries",
-                'position' => 0,
-                'active' => true
+            $ow->getNavigation()->register(
+                'listquery',
+                array (
+                    'controller' => "querybuilding",
+                    'action' => "listquery",
+                    'name' => "Saved Queries",
+                    'position' => 0,
+                    'active' => true
             ));
         }
-        OntoWiki_Navigation :: register('queryeditor', array (
+        $ow->getNavigation()->register('queryeditor', array (
             'controller' => "querybuilding",
             'action' => "editor",
             'name' => "Query Editor",
             'position' => 1,
             'active' => true
         ));
-        if (class_exists("QuerybuilderHelper")) {
-            OntoWiki_Navigation :: register('querybuilder', array (
-                'controller' => "querybuilder",
-                'action' => "manage",
-                'name' => "Query Builder ",
-                'position' => 2,
-                'active' => true
-            ));
-        }
+        // if (class_exists("QuerybuilderHelper")) {
+        //     $ow->getNavigation()->register('querybuilder', array (
+        //         'controller' => "querybuilder",
+        //         'action' => "manage",
+        //         'name' => "Query Builder ",
+        //         'position' => 2,
+        //         'active' => true
+        //     ));
+        // }
 
-        OntoWiki_Navigation :: register('graphicalquerybuilder', array (
-            'controller' => "graphicalquerybuilder",
+        $ow->getNavigation()->register('Querybuilder', array (
+            'controller' => "Querybuilder",
             'action' => "display",
             'name' => "Graphical Query Builder",
             'position' => 3,
             'active' => true
         ));
 
-        OntoWiki_Navigation :: setActive('graphicalquerybuilder', true);
+        $ow->getNavigation()->setActive('Querybuilder', true);
 
         $user = $this->_erfurt->getAuth()->getIdentity();
         $this->userUri = $user->getUri();
@@ -102,11 +106,11 @@ class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
         $this->view->componentUrlBase = $this->_componentUrlBase;
         if ($this->_owApp->selectedModel != null) {
             //stylesheets
-            $this->view->headLink()->appendStylesheet($include_base . 'resources/graphicalquerybuilder.css');
+            $this->view->headLink()->appendStylesheet($include_base . 'resources/querybuilder.css');
             $this->view->headLink()->appendStylesheet($include_base . 'resources/jquery.treeview.css');
 
             // Stylesheet for printing
-            $this->view->headLink()->appendStylesheet($include_base . 'resources/graphicalquerybuilder_print.css', 'print');
+            $this->view->headLink()->appendStylesheet($include_base . 'resources/querybuilder_print.css', 'print');
 
             //include utils/libs
             $this->view->headScript()->appendFile($include_base . 'resources/jquery.dump.js');
@@ -140,22 +144,22 @@ class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
                 $this->_request->getParam('queryuri', '') . "\";");
             }
             //include the js code
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.translations.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.controller.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.translations.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.controller.js');
 
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.model.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.model.restrictions.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.model.GQBClass.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.model.GQBQueryPattern.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.model.GQBModel.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.model.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.model.restrictions.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.model.GQBClass.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.model.GQBQueryPattern.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.model.GQBModel.js');
 
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.view.GQBView.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.view.GQBView.restrictions.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.view.GQBView.init.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.view.GQBViewPattern.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.view.GQBView.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.view.GQBView.restrictions.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.view.GQBView.init.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.view.GQBViewPattern.js');
 
             //start
-            $this->view->headScript()->appendFile($include_base . 'resources/graphicalquerybuilder.js');
+            $this->view->headScript()->appendFile($include_base . 'resources/querybuilder.js');
         } else {
             //no model selected error
             throw new OntoWiki_Exception("no model selected - maybe your session timed out");
@@ -165,14 +169,14 @@ class GraphicalquerybuilderController extends OntoWiki_Controller_Component {
 
     public function displayprototypeAction() {
         $include_base = $this->_componentUrlBase;
-        $this->view->headLink()->appendStylesheet($include_base . 'resources/prototype/graphicalquerybuilder.prototype.css');
+        $this->view->headLink()->appendStylesheet($include_base . 'resources/prototype/querybuilder.prototype.css');
 
         $this->view->headScript()->appendFile($include_base . 'resources/jquery.dump.js');
         $this->view->headScript()->appendFile($include_base . 'resources/sparql.js');
 
-        $this->view->headScript()->appendFile($include_base . 'resources/prototype/graphicalquerybuilder.classdefs.restrictions.prototype.js');
-        $this->view->headScript()->appendFile($include_base . 'resources/prototype/graphicalquerybuilder.classdefs.prototype.js');
-        $this->view->headScript()->appendFile($include_base . 'resources/prototype/graphicalquerybuilder.prototype.js');
+        $this->view->headScript()->appendFile($include_base . 'resources/prototype/querybuilder.classdefs.restrictions.prototype.js');
+        $this->view->headScript()->appendFile($include_base . 'resources/prototype/querybuilder.classdefs.prototype.js');
+        $this->view->headScript()->appendFile($include_base . 'resources/prototype/querybuilder.prototype.js');
 
         $this->view->placeholder('main.window.title')->set($this->_owApp->translate->_('Graphical Query Builder (Prototype)'));
     }

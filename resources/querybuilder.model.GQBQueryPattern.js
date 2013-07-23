@@ -108,7 +108,7 @@ GQBQueryPattern.prototype.recalculateNumInstances = function(){
     var query = escape(this.getQueryAsString()) + "\nLIMIT 1000";
 
     // send the request to the "getquerysize" service
-    var url = urlBase + 'graphicalquerybuilder/getquerysize/?default-graph-uri=' + GQB.model.graphs[0] + '&query=' + query;
+    var url = urlBase + 'querybuilder/getquerysize/?default-graph-uri=' + GQB.model.graphs[0] + '&query=' + query;
 
     var me = this;
     $.get(url, function(data){
@@ -520,7 +520,7 @@ GQBQueryPattern.prototype.getQueryAsString = function(limitClass){
  * ready (asynchronous).
  */
 GQBQueryPattern.prototype.getResults = function(){
-    jQuery.post(urlBase + "graphicalquerybuilder/getresulttable", {
+    jQuery.post(urlBase + "querybuilder/getresulttable", {
         query: this.getQueryAsString()
     }, function(table){
         var gqbEvent = new GQBEvent("gotResult", table);
@@ -701,7 +701,7 @@ function GQBQueryPatternPre(_name, _desc, _type, _saveId){
  */
 GQBQueryPatternPre.prototype.deletefromdb = function(){
     var me = this;
-    $.get(urlBase + "graphicalquerybuilder/deletepattern?id=" + this.saveId, function(result){
+    $.get(urlBase + "querybuilder/deletepattern?id=" + this.saveId, function(result){
         if (result = "All OK") {
             var gqbEvent = new GQBEvent("deleted", me);
             GQB.controller.notify(gqbEvent);
