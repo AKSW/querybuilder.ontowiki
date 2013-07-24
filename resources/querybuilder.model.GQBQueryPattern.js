@@ -585,7 +585,7 @@ GQBQueryPattern.prototype.checkIfNameAvailableAndSave = function(){
             alert(GQB.translate("noIdAvailableErrorMsg"));
         }
 
-        if (jsonresult.bindings.length == 0) {
+        if (jsonresult.results.bindings.length == 0) {
             //ok
             me.save();
         }

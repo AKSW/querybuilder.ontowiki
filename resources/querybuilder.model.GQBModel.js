@@ -175,12 +175,12 @@ GQBModel.prototype.getClasses = function(){
             query: getClassesQuery
         },
         success: function(jsonresult){
-            for (var i = 0; i < jsonresult.bindings.length; i++) {
-                var resource = jsonresult.bindings[i].type ? jsonresult.bindings[i].type.value : "";
-                var label = jsonresult.bindings[i].label ? jsonresult.bindings[i].label.value : "";
+            for (var i = 0; i < jsonresult.results.bindings.length; i++) {
+                var resource = jsonresult.results.bindings[i].type ? jsonresult.results.bindings[i].type.value : "";
+                var label = jsonresult.results.bindings[i].label ? jsonresult.results.bindings[i].label.value : "";
                 var lang = " ";
                 for (var j = 0; j < GQB.supportedLangs.length; j++) {
-                    if (jsonresult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
+                    if (jsonresult.results.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
                         lang = GQB.supportedLangs[j];
                         break;
                     }
@@ -206,9 +206,9 @@ GQBModel.prototype.getClasses = function(){
                     query: getInheritanceQuery
                 },
                 success: function(jsonresult){
-                    for (var i = 0; i < jsonresult.bindings.length; i++) {
-                        var parent = jsonresult.bindings[i].parent ? jsonresult.bindings[i].parent.value : "";
-                        var child = jsonresult.bindings[i].child ? jsonresult.bindings[i].child.value : "";
+                    for (var i = 0; i < jsonresult.results.bindings.length; i++) {
+                        var parent = jsonresult.results.bindings[i].parent ? jsonresult.results.bindings[i].parent.value : "";
+                        var child = jsonresult.results.bindings[i].child ? jsonresult.results.bindings[i].child.value : "";
                         inheritanceStructure.push({
                             "parent": parent,
                             "child": child
@@ -357,13 +357,13 @@ GQBModel.prototype.getSavedQueries = function(){
         success: function(jsonresult){
             //delete previous list of queries
             me.savedQueries.length = 0;
-            for (var i = 0; i < jsonresult.bindings.length; i++) {
-                var query = (jsonresult.bindings[i].query) ? jsonresult.bindings[i].query.value : " ";
-                var name = (jsonresult.bindings[i].name) ? jsonresult.bindings[i].name.value : "Query";
-                var desc = (jsonresult.bindings[i].desc) ? jsonresult.bindings[i].desc.value : " ";
-                var type = (jsonresult.bindings[i].type) ? jsonresult.bindings[i].type.value : undefined;
-                var typelabel = (jsonresult.bindings[i].typelabel) ? jsonresult.bindings[i].typelabel.value : " ";
-                var id = (jsonresult.bindings[i].saveId) ? jsonresult.bindings[i].saveId.value : undefined;
+            for (var i = 0; i < jsonresult.results.bindings.length; i++) {
+                var query = (jsonresult.results.bindings[i].query) ? jsonresult.results.bindings[i].query.value : " ";
+                var name = (jsonresult.results.bindings[i].name) ? jsonresult.results.bindings[i].name.value : "Query";
+                var desc = (jsonresult.results.bindings[i].desc) ? jsonresult.results.bindings[i].desc.value : " ";
+                var type = (jsonresult.results.bindings[i].type) ? jsonresult.results.bindings[i].type.value : undefined;
+                var typelabel = (jsonresult.results.bindings[i].typelabel) ? jsonresult.results.bindings[i].typelabel.value : " ";
+                var id = (jsonresult.results.bindings[i].saveId) ? jsonresult.results.bindings[i].saveId.value : undefined;
                 me.savedQueries.push(new GQBQueryPatternPre(name, desc, type, id));
             }
 
@@ -425,12 +425,12 @@ FILTER(sameTerm(?uri, <" +
 
             //delete previous list of queries
             me.savedQueries.length = 0;
-            for (var i = 0; i < jsonresult.bindings.length; i++) {
-                var json = (jsonresult.bindings[i].json) ? jsonresult.bindings[i].json.value : " ";
-                var name = (jsonresult.bindings[i].name) ? jsonresult.bindings[i].name.value : "Query";
-                var desc = (jsonresult.bindings[i].desc) ? jsonresult.bindings[i].desc.value : " ";
-                var type = (jsonresult.bindings[i].type) ? jsonresult.bindings[i].type.value : undefined;
-                var typelabel = (jsonresult.bindings[i].typelabel) ? jsonresult.bindings[i].typelabel.value : " ";
+            for (var i = 0; i < jsonresult.results.bindings.length; i++) {
+                var json = (jsonresult.results.bindings[i].json) ? jsonresult.results.bindings[i].json.value : " ";
+                var name = (jsonresult.results.bindings[i].name) ? jsonresult.results.bindings[i].name.value : "Query";
+                var desc = (jsonresult.results.bindings[i].desc) ? jsonresult.results.bindings[i].desc.value : " ";
+                var type = (jsonresult.results.bindings[i].type) ? jsonresult.results.bindings[i].type.value : undefined;
+                var typelabel = (jsonresult.results.bindings[i].typelabel) ? jsonresult.results.bindings[i].typelabel.value : " ";
 
                 var canPos = GQB.getPositionOfDOMObj("gqbcanvas");
                 GQB.view.dropCursorPosX = canPos.x+100;

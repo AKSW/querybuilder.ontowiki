@@ -379,22 +379,22 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                             alert(GQB.translate("errorParsingQueriesMsg"));
                             return;
                         }
-                        if(jsonresult.bindings.length != 1){
-                            alert(GQB.translate("errorLoadingQueryMsg", jsonresult.bindings.length));
+                        if(jsonresult.results.bindings.length != 1){
+                            alert(GQB.translate("errorLoadingQueryMsg", jsonresult.results.bindings.length));
                             return;
                         }
 
                         // Get data from the result:
                         // (do we want to do anything with this other data??)
-                        //var queryuri = $(jsonresult.bindings[0].queryuri).attr("value");
-                        //var name = $(jsonresult.bindings[0].name).attr("value");
-                        //var id = $(jsonresult.bindings[0].id).attr("value");
-                        var json = $(jsonresult.bindings[0].patternjson).attr("value");
-                        //var query = $(jsonresult.bindings[0].query).attr("value");
-                        //var date = $(jsonresult.bindings[0].date).attr("value");
-                        //var desc = $(jsonresult.bindings[0].desc).attr("value");
-                        //var type = $(jsonresult.bindings[0].type).attr("value");
-                        //var typelabel = $(jsonresult.bindings[0].typelabel).attr("value");
+                        //var queryuri = $(jsonresult.results.bindings[0].queryuri).attr("value");
+                        //var name = $(jsonresult.results.bindings[0].name).attr("value");
+                        //var id = $(jsonresult.results.bindings[0].id).attr("value");
+                        var json = $(jsonresult.results.bindings[0].patternjson).attr("value");
+                        //var query = $(jsonresult.results.bindings[0].query).attr("value");
+                        //var date = $(jsonresult.results.bindings[0].date).attr("value");
+                        //var desc = $(jsonresult.results.bindings[0].desc).attr("value");
+                        //var type = $(jsonresult.results.bindings[0].type).attr("value");
+                        //var typelabel = $(jsonresult.results.bindings[0].typelabel).attr("value");
 
                         try {
                             // now that we have the saved query as a json object, we can attempt

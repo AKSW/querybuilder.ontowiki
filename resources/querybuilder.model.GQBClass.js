@@ -421,35 +421,35 @@ GQBClass.prototype.getConformPropsAndNonConformLinksAndProps = function(){
         dataType: "json",
         success: function (jsonResult) {
             var modelconformPropsUris = new Array();
-            if (jsonResult.bindings.length > 0) {
+            if (jsonResult.results.bindings.length > 0) {
                 var uri;
                 var label;
                 var lang;
                 var order;
                 var exrange;
 
-                for (var i=0; i < jsonResult.bindings.length; i++) {
-                    uri = jsonResult.bindings[i].property.value;
-                    label = jsonResult.bindings[i].label.value;
-                    if (jsonResult.bindings[i].range) {
-                        exrange = jsonResult.bindings[i].range.value.split("#").pop();
+                for (var i=0; i < jsonResult.results.bindings.length; i++) {
+                    uri = jsonResult.results.bindings[i].property.value;
+                    label = jsonResult.results.bindings[i].label.value;
+                    if (jsonResult.results.bindings[i].range) {
+                        exrange = jsonResult.results.bindings[i].range.value.split("#").pop();
                         if ( exrange == "date" || exrange == "gDay" || exrange == "gYearMonth" || exrange == "gMonth" || exrange == "gMonthDay" ) continue;
                     }
                     lang = " ";
                     for (var j = 0; j < GQB.supportedLangs.length; j++) {
-                        if (jsonResult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
+                        if (jsonResult.results.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
                             lang = GQB.supportedLangs[j];
                             break;
                         }
                     }
-                    order = (jsonResult.bindings[i].order != undefined ? jsonResult.bindings[i].order.value : undefined);
+                    order = (jsonResult.results.bindings[i].order != undefined ? jsonResult.results.bindings[i].order.value : undefined);
 
                     var foundProp = myType.findAnyPropertyByUri(uri);
                     if (foundProp) {
                         foundProp.addLabel(label,lang);
                     } else {
-                        modelconformPropsUris.push(jsonResult.bindings[i].property.value);
-                        myType.properties.push(new GQBProperty(uri, label, lang, (jsonResult.bindings[i].range ? jsonResult.bindings[i].range.value : "not found"), order));
+                        modelconformPropsUris.push(jsonResult.results.bindings[i].property.value);
+                        myType.properties.push(new GQBProperty(uri, label, lang, (jsonResult.results.bindings[i].range ? jsonResult.results.bindings[i].range.value : "not found"), order));
                     }
                 }
             } else {
@@ -519,36 +519,36 @@ WHERE { \n\
         dataType: "json",
         success: function (jsonResult) {
                         //$.dump(jsonResult);
-            if (jsonResult.bindings.length > 0) {
+            if (jsonResult.results.bindings.length > 0) {
                 var uri;
                 var label;
                 var lang;
                 var order;
                 var exrange;
-                                for (var i=0; i < jsonResult.bindings.length; i++) {
+                                for (var i=0; i < jsonResult.results.bindings.length; i++) {
                     exrange = "";
-                    uri = jsonResult.bindings[i].uri.value;
-                                        var extracted_label = jsonResult.bindings[i].uri.value.split('/\/#/');
-                                        label = jsonResult.bindings[i].label ? jsonResult.bindings[i].label.value : extracted_label[extracted_label.length -1];
-                    if (jsonResult.bindings[i].range) {
-                        exrange = jsonResult.bindings[i].range.value.split("#").pop();
+                    uri = jsonResult.results.bindings[i].uri.value;
+                                        var extracted_label = jsonResult.results.bindings[i].uri.value.split('/\/#/');
+                                        label = jsonResult.results.bindings[i].label ? jsonResult.results.bindings[i].label.value : extracted_label[extracted_label.length -1];
+                    if (jsonResult.results.bindings[i].range) {
+                        exrange = jsonResult.results.bindings[i].range.value.split("#").pop();
                         if ( exrange == "date" || exrange == "gDay" || exrange == "gYearMonth" || exrange == "gMonth" || exrange == "gMonthDay" ) continue;
                     }
                     lang = " ";
                     for (var j = 0; j < GQB.supportedLangs.length; j++) {
-                        if (jsonResult.bindings[i].label && jsonResult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
+                        if (jsonResult.results.bindings[i].label && jsonResult.results.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
                             lang = GQB.supportedLangs[j];
                             break;
                         }
                     }
-                    order = (jsonResult.bindings[i].order != undefined ? jsonResult.bindings[i].order.value : undefined);
+                    order = (jsonResult.results.bindings[i].order != undefined ? jsonResult.results.bindings[i].order.value : undefined);
 
                     var foundProp = myType.findAnyPropertyByUri(uri);
                     if (foundProp) {
                         foundProp.addLabel(label,lang);
                     } else {
-                                                var newProp = new GQBProperty(uri, label, lang, (jsonResult.bindings[i].range ? jsonResult.bindings[i].range.value : ""), order);
-                        if (jsonResult.bindings[i].range) {
+                                                var newProp = new GQBProperty(uri, label, lang, (jsonResult.results.bindings[i].range ? jsonResult.results.bindings[i].range.value : ""), order);
+                        if (jsonResult.results.bindings[i].range) {
                                                         myType.outgoingLinks.push(newProp);
                             myType.nonModelConformLinks.push(newProp);
                         } else {
@@ -614,7 +614,7 @@ GQBClass.prototype.getConformLinks = function(){
         data: {query: getLinksQuery, "default-graph-uri" : GQB.model.graphs[0]},
         dataType: "json",
         success: function (jsonResult) {
-            if (jsonResult.bindings.length > 0) {
+            if (jsonResult.results.bindings.length > 0) {
                 var rangeclass;
                 var uri;
                 var label;
@@ -622,24 +622,24 @@ GQBClass.prototype.getConformLinks = function(){
                 var order;
                 var exrange;
 
-                for (var i=0; i < jsonResult.bindings.length; i++) {
-                    uri = jsonResult.bindings[i].property.value;
-                    label = jsonResult.bindings[i].label.value;
+                for (var i=0; i < jsonResult.results.bindings.length; i++) {
+                    uri = jsonResult.results.bindings[i].property.value;
+                    label = jsonResult.results.bindings[i].label.value;
 
                     lang = " ";
                     for (var j = 0; j < GQB.supportedLangs.length; j++) {
-                        if (jsonResult.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
+                        if (jsonResult.results.bindings[i].label["xml:lang"] == GQB.supportedLangs[j]) {
                             lang = GQB.supportedLangs[j];
                             break;
                         }
                     }
-                    order = (jsonResult.bindings[i].order != undefined ? jsonResult.bindings[i].order.value : undefined);
+                    order = (jsonResult.results.bindings[i].order != undefined ? jsonResult.results.bindings[i].order.value : undefined);
 
                     var foundProp = myType.findAnyPropertyByUri(uri);
                     if (foundProp) {
                         foundProp.addLabel(label,lang);
                     } else {
-                        myType.outgoingLinks.push(new GQBProperty(uri, label, lang, (jsonResult.bindings[i].range ? jsonResult.bindings[i].range.value : "unknown"), order));
+                        myType.outgoingLinks.push(new GQBProperty(uri, label, lang, (jsonResult.results.bindings[i].range ? jsonResult.results.bindings[i].range.value : "unknown"), order));
                     }
                 }
             }
