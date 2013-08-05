@@ -116,7 +116,8 @@ class QuerybuilderController extends OntoWiki_Controller_Component {
             $this->view->headScript()->appendFile($include_base . 'resources/jquery.dump.js');
             $this->view->headScript()->appendFile($include_base . 'resources/jquery.treeview.js');
             $this->view->headScript()->appendFile($include_base . 'resources/jquery.scrollTo-1.4.2-min.js');
-            $this->view->headScript()->appendFile($include_base . 'resources/sparql.js');
+            //TODO: no longer used?
+            //$this->view->headScript()->appendFile($include_base . 'resources/sparql.js');
             $this->view->headScript()->appendFile($include_base . 'resources/raphael.js');
             $this->view->headScript()->appendFile($include_base . 'resources/raphael.gqb.js');
 
@@ -167,6 +168,7 @@ class QuerybuilderController extends OntoWiki_Controller_Component {
         $this->view->placeholder('main.window.title')->set($this->_owApp->translate->_('Graphical Query Builder'));
     }
 
+    // TODO: can be removed?
     public function displayprototypeAction() {
         $include_base = $this->_componentUrlBase;
         $this->view->headLink()->appendStylesheet($include_base . 'resources/prototype/querybuilder.prototype.css');
@@ -227,8 +229,7 @@ class QuerybuilderController extends OntoWiki_Controller_Component {
                     'result_format' => 'json'
                 ));
                 $resarray = json_decode($result);
-                $count = count($resarray-> {
-                    'bindings' });
+                $count = count($resarray->{'results'}->{'bindings'});
             } catch (Exception $e) {
                 $count = -2;
                 $response->setBody($count);
