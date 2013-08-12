@@ -161,7 +161,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
         //    GQB.view.draggedColRightHead.css("width", (GQB.view.dragColBaseWidth + e.clientX - GQB.view.dragColMouseDownX) + "px");
         //}
 
-        // handle dragging of rapheal boxes:
+        // handle dragging of raphael boxes:
         if (GQB.view.draggedViewClass) {
             GQB.view.draggedViewClass.translate(e.clientX - GQB.view.draggedViewClass.dx, e.clientY - GQB.view.draggedViewClass.dy);
             GQB.view.draggedViewClass.raphLabel.toBack();
@@ -253,6 +253,8 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
 
         // dragged box was dropped onto another box:
         else if (GQB.view.mousedOverViewClass) {
+          console.log("[AN] Dragged over another box");
+          console.log(GQB.view.mousedOverViewClass);
           var doCleanup = function () {
                 draggedViewClass.raphBox.toFront();
                 draggedViewClass.raphTrashIcon.toFront();
@@ -320,6 +322,11 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
         drop: function(event,ui) {
             //if ($(ui.draggable).attr("modelId") == undefined) return;
 
+            // AN: For some reason the structure of the event
+            // has changed, but if we add .originalEvent it works
+            event = event.originalEvent;
+            console.log($(ui.draggable));
+            console.log(GQB.view.mousedOverViewClass);
             GQB.view.dropCursorPosX = event.pageX;
             GQB.view.dropCursorPosY = event.pageY;
 
@@ -487,9 +494,11 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
                 GQB.model.addPattern(newPattern);
                 var newStartClass = new GQBClass(draggedClass);
                 newStartClass.getPropertiesWithInherited();
-                newPattern.setStartClass(newStartClass);
+                newPattern.setStartClass(newStartClass, [event.originalEvent.pageX, event.originalEvent.pageY]);
+                console.log("[AN] setStartClass from init");
 
-                GQB.view.showInfo(GQB.translate("newPatternMsg"));
+                //FIXME: Superfluous?!
+                //GQB.view.showInfo(GQB.translate("newPatternMsg"));
             }
         }
     });
@@ -751,6 +760,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
     });
 
     $(".gqb-button-movecolleft").live("mousedown", function(event){
+        event = event.originalEvent;
         var cIdx = parseInt($(this).attr("cIdx"));
         GQB.view.draggedColLeftHead = $(this).parents("th");
         GQB.view.dragColMouseDownX = event.pageX;
@@ -758,6 +768,7 @@ GQBView.prototype.initMouseClickHandlers = function() {
     });
 
     $(".gqb-button-movecolright").live("mousedown", function(event){
+        event = event.originalEvent
         var cIdx = parseInt($(this).attr("cIdx"));
         GQB.view.draggedColRightHead = $(this).parents("th");
         GQB.view.dragColMouseDownX = event.pageX;

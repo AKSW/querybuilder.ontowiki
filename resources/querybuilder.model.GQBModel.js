@@ -457,6 +457,7 @@ FILTER(sameTerm(?uri, <" +
  */
 GQBModel.prototype.addPattern = function(pattern, frominit){
     this.queryPatterns.push(pattern);
+    //[AN] What is this? "newPatternInit" is nevern treated
     frominit = false; //Debug
     var gqbEvent = new GQBEvent(!frominit ? "newPattern" : "newPatternInit", pattern);
     GQB.controller.notify(gqbEvent);

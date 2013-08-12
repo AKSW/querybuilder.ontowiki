@@ -26,6 +26,7 @@ function GQBController(){
 GQBController.prototype.notify = function (_event){
     switch(_event.name) {
         case "gotClasses":
+            //[AN] Why is the following line set to comment?
             //GQB.view.addRdfClassesToTree(_event.obj);
             break;
         case "gotQueries":
@@ -36,6 +37,8 @@ GQBController.prototype.notify = function (_event){
             GQB.view.showInfo(GQB.translate("newPatternMsg"));
             break;
         case "expandedPattern":
+            console.log(_event.obj[0]);
+            console.log(_event.obj[1]);
             GQB.view.addClassToPatternAtPos(_event.obj[0], _event.obj[1], _event.obj[2]);
             GQB.view.selectClass(_event.obj[1], false);
             GQB.view.showInfo(GQB.translate("patternExpandedMsg"));
