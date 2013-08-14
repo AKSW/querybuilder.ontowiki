@@ -134,7 +134,7 @@ GQBView.prototype.initMouseMoveAndDropHandlers = function() {
         function(){$(this).draggable({
             appendTo: 'body',
             iframeFix: false,
-            cursorAt: {right: 0},
+            cursorAt: {right: -10, top: -5},
             zIndex: 1000,
             ghosting: true,
             revert: true,
